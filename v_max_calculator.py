@@ -35,9 +35,12 @@ def get_solution(P_a_max, S, rho, W, k, C_D_0):
 def get_max_velocity(h, data):
     P_a_max, k, S, W, C_D_0 = data
     result =get_solution(P_a_max, S, rho, W, k, C_D_0)
-    number = result[0]
+    number = v(result[0], W, S, rho)
     converged = result[3]
     return (number, converged)
+def get_min_velocity(h, data):
+    P_a_max, k, S, W, C_D_0 = data
+    
     
 #result =get_solution(P_a_max, S, rho, W, k, C_D_0)
 #number = result[0]

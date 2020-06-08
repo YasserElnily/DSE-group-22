@@ -19,10 +19,19 @@ P_a_max=10000# Watt
 S=11
 W=1100*9.81
 C_D_0=0.03
-
-
-h = arange(0,4000, 10000)
-
 data = (P_a_max, k, S, W, C_D_0)
+n=4000
+h = linspace(0,4000, n)
+
+v_max_line = zeros(h.shape)
+v_min_line = zeros(h.shape)
+
+for i in range(n):
+    v_max_line[i] = get_max_velocity(h[i], data)
+    v_min_line[i] = get_min_velocity(h[i], data)
+    
+    
+
+
 
 results2= get_max_velocity(h, data)
