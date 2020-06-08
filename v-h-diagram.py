@@ -6,7 +6,7 @@ Created on Mon Jun  8 11:12:47 2020
 """
 
 from numpy import *
-#from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 from ISA_calculator import ISA
 from scipy.optimize import fsolve
 
@@ -35,3 +35,14 @@ def get_solution(P_a_max, S, rho, W, k, C_D_0):
     
 result =get_solution(P_a_max, S, rho, W, k, C_D_0)
 print(result)
+
+n = 1000
+C_L_x = linspace(-5, 10, n)
+fx = empty(n)
+for i in range(n):
+    fx[i]=C_L_function(C_L_x[i], P_a_max, S, rho, W, k, C_D_0)
+    
+plt.plot(C_L_x, fx)
+plt.plot([-4,4],[0,0],'r-')
+plt.ylim([-0.01,0.01])
+plt.show()
