@@ -1,6 +1,7 @@
 #Input file
-"""In this file all inputs that are not depended on the tools that are being created. 
-Feel free to add more variables that need to be set."""
+"""In this file all inputs that are not depended on the tools that are being created. Feel free to add more variables that need to be set.
+This file can be used by writing (from Aircraft_constance_Data.py) in your program. At that point you can use all these constance like you would 
+in a normal python document. The same steps should be taken for all tools that are beeing created"""
 
 #Fuselage section
 
