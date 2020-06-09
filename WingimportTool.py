@@ -6,6 +6,7 @@ This is a temporary script file.
 """
 
 import numpy as np
+import math
 
 
 #importing the Airfoildata
@@ -21,7 +22,7 @@ def interpolation(x1,x2,y1,y2,a):
     return interp
 
 
-def wingboxdimension(filename,sparxloc):
+def wingboxcoordinates(filename,sparxloc):
     inpu = np.loadtxt(fname = filename,dtype=str)[1:]
     data = inpu.astype(np.float)
     sparxlocx = 0
@@ -31,17 +32,12 @@ def wingboxdimension(filename,sparxloc):
             sparxlocx = x[0]
             sparxlocy = x[1]
             narrhit = narr
-            
-            
-    
         if narr is round(len(data)/2)-1 :
             narr1 = narrhit
             sparxlocx = 0
-    
-        
         narr = narr + 1
     narr2 = narrhit
-    print(narr1,narr2)
+    
     #interpolation of the data
     if (sparxloc - data[narr1,0])<0:
         B = interpolation(data[narr1,0],data[narr1+1,0],data[narr1,1],data[narr1+1,1],sparxloc)
@@ -49,26 +45,55 @@ def wingboxdimension(filename,sparxloc):
         B = interpolation(data[narr1-1,0],data[narr1,0],data[narr1-1,1],data[narr1,1],sparxloc)
     else:
         B = data[narr1,1]
-    print(B)
+    
     if (sparxloc - data[narr2,0])<0:
         C = interpolation(data[narr2,0],data[narr2-1,0],data[narr2,1],data[narr2-1,1],sparxloc)
     elif (sparxloc - data[narr2,0])>0:
         C = interpolation(data[narr2+1,0],data[narr2,0],data[narr2+1,1],data[narr2,1],sparxloc)
     else:
         C = data[narr2,1]
-        print("c",C)
+        
     
     return sparxloc,B,C
 
 airfoil = 'NACA2415.dat'
 frontspar   = .15
-rearspar    = .50
+rearspar    = .60
 
 #frontspar
-x,y1,y2 = wingboxdimension(airfoil,frontspar)
+x,y1,y2 = wingboxcoordinates(airfoil,frontspar)
 print(x,y1,y2)
 
+
 #rearspar
-x,y1,y2 = wingboxdimension(airfoil,rearspar)
+x,y1,y2 = wingboxcoordinates(airfoil,rearspar)
 print(x,y1,y2)
- 
+
+def andreiinput(airfoil,frontspar,rearspar):
+    xf, yf1,yf2 =  wingboxcoordinates(airfoil,frontspar)
+    xr, yr1, yr2 = wingboxcoordinates(airfoil,rearspar)
+    return np.array([[xf,xr,xr,xf],[yf1,yr1,yr2,yf2]])
+
+
+#wingbox dimensions
+def wingboxdimension(airfoil,frontspar,rearspar):
+    xf, yf1,yf2 =  wingboxcoordinates(airfoil,frontspar)
+    xr, yr1, yr2 = wingboxcoordinates(airfoil,rearspar)
+    
+    #frontspar
+    hf = abs(yf1) + abs(yf2)
+    print(hf)
+    #rearspar
+    hr = abs(yr1) + abs(yr2)
+    print(hr)
+    
+    #topskin
+    ltop = math.sqrt((xr-xf)**2 + (yf1-yr1)**2)
+    thethat1 = math.atan((xr-xf)/abs(yf1-yr1))
+    thethat2 = math.atan(abs(yf1-yr1)/(xr-xf))
+    
+    #bottom skin
+    lbottom = math.sqrt((xr-xf)**2 + (yf2-yr2)**2)
+    thethab1 = math.atan((xr-xf)/abs(yf2-yr2))
+    thethab2 = math.atan(abs(yf2-yr2)/(xr-xf))
+    return thethat2,thethab2
