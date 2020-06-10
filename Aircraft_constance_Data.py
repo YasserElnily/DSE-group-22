@@ -3,7 +3,11 @@
 This file can be used by writing (from Aircraft_constance_Data.py) in your program. At that point you can use all these constance like you would 
 in a normal python document. The same steps should be taken for all tools that are beeing created"""
 
-#Fuselage section
+###Fuselage section
+
+#Geometry
+lf = 7 #[m] The length of the fuselage
+
 
 #wing section
 airfoil     = 'airfoil.dat' #this is the dat file of the coordinates of the airfoil geometry 
@@ -13,8 +17,54 @@ chord       = 2 #m
 span        = 7 #m
 taper       = 0 
 
-#propulsion section
+###propulsion section
+#...
 
-#Balance section
+
+
+
+###Aerodynamics
+
+#Airfoil characteristics
+#...
+
+#Wing characteristics
+xac = 0.25 #[%MAC] #Assumed 0.25 for now
+Cmac = -0.6943728618 
+CLh = 1.5
+CLah = 3.961586125
+CLAh = 0.8 
+CLaAh = 7.489196376 
+deda = 0 #no downwash over the tail due main wing in front of canard
+
+#Wing geometry: rectangle
+S = 12.04 #[m^2]
+MAC = 1.72 #[m] The length of the mean aerodynamic cord.
+
+
+###Stability and Control
+
+#masses - used for potato diagram
+OEW = 729 #[kg]
+mpayload = 150 #[kg]
+mfuel = 92 #[kg]
+
+#Wing pos
+xLEMAC = 5 #[m]
+lh =  -4 #[m], <0 for canard
+
+#CGs of particular masses
+x0 = 4.5 #[m]
+xcgpayload = 1 #[m]
+xcgfuel = xLEMAC + 0.5*MAC #[m]
+
+#Some more XPlot data
+SM = 0.05 #Stability Margin (SM)
+Vh = 160 #[km/h] Speed of flow over tail is same as over main wing for canard
+V = 160 #[km/h] Ratio Vh/V need to be 1.
+
+
+
+
 
 
