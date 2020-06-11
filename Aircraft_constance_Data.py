@@ -19,7 +19,7 @@ taper       = 0
 
 ###propulsion section
 #...
-
+deltaTe = 500 # *(assumed) [N] #differential thrust after engine failure
 
 
 
@@ -51,7 +51,7 @@ mfuel = 92 #[kg]
 
 #Wing pos
 xLEMAC = 5 #[m]
-lh =  -4 #[m], <0 for canard
+lh =  -4.5 #[m], <0 for canard
 
 #CGs of particular masses
 x0 = 4.5 #[m]
@@ -62,6 +62,11 @@ xcgfuel = xLEMAC + 0.5*MAC #[m]
 SM = 0.05 #Stability Margin (SM)
 Vh = 160 #[km/h] Speed of flow over tail is same as over main wing for canard
 V = 160 #[km/h] Ratio Vh/V need to be 1.
+
+#V- tail sizing
+bv = 1.5 #[m], the span of the v tail, can be chosen accordingly
+B = 25 #[deg] The acceptable side slip angle for the aircraft: chosen by engineers.
+#lv = lf - ShSmin(3, 'no')[0] #Assuming the Y acts at the end of the fuselage and lv is the length to xLEMAC
 
 
 

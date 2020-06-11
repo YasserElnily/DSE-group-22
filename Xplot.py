@@ -219,17 +219,19 @@ def TailSize(xLEMAC, accuracy, plot):
     return None 
 
 #accuracy = 3   
-def ShSmin(accuracy):
+def ShSmin(accuracy, plot):
     """ 
     FUNCTION: This function can determine the minimum tail size (Sh/S) of the canard for the specified canard pos in the input file.
     INPUTS: 
             - accuracy (type=integer): The amount of decimal points you want the function to determine the Sh/S: 
                         3 is computed relatively quickly, with 4 it takes quite soe time.
+            - plot: if answered with 'yes' the function will also give a plot, if 'no' then only numbers are returned.
+            
     OUTPUTS:
-            - (New) Leading edge of he MAC: xLEMAC (type=float)
-            - Tail size: Sh/H (type=float)
-            - A plot of the Loading (Potato diagram)
-            - Xplot with the CG Range. 
+            - (New) Leading edge of he MAC: xLEMAC (type=float).
+            - Tail size: Sh/H (type=float).
+            - A plot of the Loading (Potato diagram) if plot = 'yes'.
+            - Xplot with the CG Range if plot = 'yes'.
     """
     #Finding the min ShS possible
     for xcontr in np.arange(Controllabilityxcg(0), Controllabilityxcg(1), -10**-accuracy):
@@ -279,8 +281,8 @@ def ShSmin(accuracy):
             break
     
     #making sure that the results are printed and plotted
-    result = TailSize(xLEMACmin, accuracy, 'yes')
-    result2 = Potato(xLEMACmin, 'yes')
-    plt.tight_layout()
+    result = TailSize(xLEMACmin, accuracy, plot)
+    result2 = Potato(xLEMACmin, plot)
+    #plt.tight_layout()
     #print(xLEMACmin, result[0])
     return xLEMACmin, result[0]
