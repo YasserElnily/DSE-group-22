@@ -96,4 +96,4 @@ def wingboxdimension(airfoil,frontspar,rearspar):
     lbottom = math.sqrt((xr-xf)**2 + (yf2-yr2)**2)
     thethab1 = math.atan((xr-xf)/abs(yf2-yr2))
     thethab2 = math.atan(abs(yf2-yr2)/(xr-xf))
-    return thethat2,thethab2
+    return hf, hr, ltop, lbottom, thethat2, thethab2
