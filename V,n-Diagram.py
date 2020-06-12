@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 from ISA_calculator import ISA
 
 
-h = 2000#11887.2
-m_to = 1180
+h = 0#11887.2
+m_to = 1000
 
 
 print("Altitude = " + str(h) + "m")
@@ -21,7 +21,7 @@ C_L_max_HLD = 2.36
 rho_0 = 1.225
 rho = ISA(h)[2]
 speed_of_sound = ISA(h)[3]
-S_ref = 10
+S_ref = 12.04
 S_flapped = 1.25 * S_ref
 g = 9.80665
 n_max = 2.5
