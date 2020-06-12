@@ -7,7 +7,7 @@ from ISA_calculator import ISA
 
 
 h = 0#11887.2
-m_to = 1000
+m_to = 914 #kg
 
 
 print("Altitude = " + str(h) + "m")
@@ -15,13 +15,13 @@ print("Altitude = " + str(h) + "m")
 
 accuracy = 0.01
 
-C_L_max_clean = 1.8#2.023
+C_L_max_clean = 1.64#2.023
 C_L_max_HLD = 2.36
 
 rho_0 = 1.225
 rho = ISA(h)[2]
 speed_of_sound = ISA(h)[3]
-S_ref = 12.04
+S_ref = 10.24
 S_flapped = 1.25 * S_ref
 g = 9.80665
 n_max = 2.5
