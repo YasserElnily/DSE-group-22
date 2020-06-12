@@ -15,13 +15,13 @@ print("Altitude = " + str(h) + "m")
 
 accuracy = 0.01
 
-C_L_max_clean = 1.64#2.023
+C_L_max_clean = 1.1644#2.023
 C_L_max_HLD = 2.36
 
 rho_0 = 1.225
 rho = ISA(h)[2]
 speed_of_sound = ISA(h)[3]
-S_ref = 10.24
+S_ref = 15
 S_flapped = 1.25 * S_ref
 g = 9.80665
 n_max = 2.5
@@ -36,7 +36,7 @@ n_max_HLD = 1.5
 cruise_speed=160
 
 C_L_alpha_M0 = 4#5.634
-MAC = 1.46
+MAC = 1.76
 w = m_to*g/S_ref #wing loading
 
 
