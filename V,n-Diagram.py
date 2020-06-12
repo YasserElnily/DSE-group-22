@@ -344,6 +344,9 @@ i_V_C = 0
 i_V_D = 0
 i_V_stst6 = 0
 
+V_B = V_S*sqrt(ng(U_C, V_C))
+
+
 #Construct the curves/lines for each gust speed U & the static stall curve
 for i in range(len(V_EAS)):
     gline1[i] = ng(U_B, V_EAS[i])
@@ -353,7 +356,8 @@ for i in range(len(V_EAS)):
     gline5[i] = ng(-U_C, V_EAS[i])
     gline6[i] = ng(-U_B, V_EAS[i])
 
-
+    if (V_EAS[i] >= V_B-0.5*accuracy) & (V_EAS[i] <= V_B+0.5*accuracy):
+        i_V_B = i
     if (V_EAS[i] >= V_C-0.5*accuracy) & (V_EAS[i] <= V_C+0.5*accuracy):
         i_V_C = i
     if (V_EAS[i] >= V_D-0.5*accuracy) & (V_EAS[i] <= V_D+0.5*accuracy):
@@ -365,10 +369,10 @@ for i in range(len(V_EAS)):
         static_stall[i] = st_stall(V_EAS[i])
     elif go_on & (st_stall(V_EAS[i]) > gline1[i]):
         static_stall[i] = st_stall(V_EAS[i])
-        V_B = V_EAS[i]
-        i_V_B = i
+        #V_B = V_EAS[i]
+        #i_V_B = i
         #print(V_B)
-        ng1 = st_stall(V_EAS[i])
+        #ng1 = st_stall(V_EAS[i])
         #print(ng1)
         go_on = False
 
@@ -378,7 +382,8 @@ for i in range(len(V_EAS)):
         ngstst6 = st_stall(V_EAS[i])
         go_on_2 = False
 
-
+ng1 = st_stall(V_B)
+ng1old = ng(U_B, V_B)
 ng2 = ng(U_C, V_C)
 ng3 = ng(U_D, V_D)
 ng4 = ng(-U_D, V_D)
@@ -405,7 +410,7 @@ gusts.plot(V_EAS[:i_V_D+1], gline4[:i_V_D+1], color=g_envelope_color, linestyle=
 gusts.plot(V_EAS[:i_V_C+1], gline5[:i_V_C+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[:i_V_stst6+1], gline6[:i_V_stst6+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[i_V_stst6:i_V_B+1], gline6[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
-gusts.plot(V_EAS[:i_V_stst6+1], static_stall[:i_V_stst6+1], color=g_envelope_color, linestyle="dashed")
+gusts.plot(V_EAS[:i_V_B+1], static_stall[:i_V_B+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[i_V_stst6:i_V_B+1], static_stall[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
 
@@ -416,7 +421,7 @@ gusts.plot(V_EAS[i_V_B:i_V_C+1], gline56[i_V_B:i_V_C+1], color=g_envelope_color,
 gusts.vlines(V_D, ng4, ng3, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
 gusts.vlines(V_C, min(0.,ng5), ng2, color=g_envelope_color, linestyle="dashed")
-gusts.vlines(V_B, min(0.,ng6), ng1, color=g_envelope_color, linestyle="dashed")
+gusts.vlines(V_B, min(0.,ng6), ng1old, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_D, 0., ng4, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_S, 0., 1., color=g_envelope_color, linestyle="dashed")
 
@@ -437,7 +442,8 @@ gusts.xaxis.set_ticks_position('bottom')
 gusts.grid(True)
 
 gusts.set_title("(V, n)-diagram for gusts")
-gusts.set_xlabel(r"$V_{EAS}$")
+gusts.set_xlabel(r"$V_{EAS} [\frac{m}{s}]$")
+gusts.xaxis.set_label_coords(1.08, 0.32)
 gusts.set_ylabel(r"$n_g$")
 
 gusts.text(V_S, 0 + 0.05, r"$V_S$")
@@ -448,12 +454,12 @@ gusts.text(V_D, 0 + 0.05, r"$V_D$")
 gusts.text(V_B, ng1 + 0.05, "1")
 gusts.text(V_C, ng2 + 0.05, "2")
 gusts.text(V_D, ng3 + 0.05, "3")
-gusts.text(V_D + 1, ng4 + 0.05, "4")
-gusts.text(V_C + 1, ng5 + 0.06, "5")
-gusts.text(V_B + 1, ng6 + 0.06, "6")
+gusts.text(V_D + 0.8, ng4 - 0.14, "4")
+gusts.text(V_C + 0.8, ng5 - 0.14, "5")
+gusts.text(V_B + 0.8, ng6 - 0.14, "6")
 
-gusts.text(0 + 5, 0.9 * ng1, "h = " + str(h) + "m")
-gusts.text(0 + 5, 0.9 * ng1 - 0.2, "m = " + str(m_to) + "kg")
+#gusts.text(0 + 5, 0.9 * ng1, "h = " + str(h) + "m")
+#gusts.text(0 + 5, 0.9 * ng1 - 0.2, "m = " + str(m_to) + "kg")
 
 
 plt.show()
