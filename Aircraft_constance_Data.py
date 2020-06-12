@@ -68,8 +68,18 @@ bv = 1.5 #[m], the span of the v tail, can be chosen accordingly
 B = 25 #[deg] The acceptable side slip angle for the aircraft: chosen by engineers.
 #lv = lf - ShSmin(3, 'no')[0] #Assuming the Y acts at the end of the fuselage and lv is the length to xLEMAC
 
+"""structural inputs"""
+#materials
+alpha_Al = 0.8
+n_Al = 0.6
+sig_y6061 = 280 * 10**6
+sig_ult6061 = 338 * 10**6   
+E_6061 = 70 * 10**9 
+G_6061 = 27 * 10**9
 
-
+#stringerdimensions
+t_s = 0.02 #Stringer thickness
+h_s = 0.02 #Stringer dimension
 
 
 
