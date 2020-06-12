@@ -15,7 +15,7 @@ print("Altitude = " + str(h) + "m")
 
 accuracy = 0.01
 
-C_L_max_clean = 3#2.023
+C_L_max_clean = 1.8#2.023
 C_L_max_HLD = 2.36
 
 rho_0 = 1.225
@@ -193,7 +193,7 @@ fig1 = plt.figure()
 maneuvers = fig1.add_subplot(111)
 
 
-
+dashed_lines_color = "k"
 #Flight envelope
 
 envelope_linewidth = 2.5
@@ -218,7 +218,7 @@ maneuvers.hlines(n_min_VTOL, 0, V_end_n_min_VTOL, color=m_envelope_color, linewi
 
 #Dashed lines
 
-dashed_lines_color = "k"
+
 
 maneuvers.vlines(V_S, 0., 1., color=dashed_lines_color, linestyle="dashed")
 maneuvers.vlines(V_A, n_min, n_max, color=dashed_lines_color, linestyle="dashed")
@@ -257,7 +257,7 @@ maneuvers.set_xlim(-2, V_D +5)
 
 #maneuvers.text(V_S_1, 0 + 0.05, r"$V_{S_1}$")
 maneuvers.text(V_S, 0 + 0.05, r"$V_S$")
-maneuvers.text(V_H, 0 + 0.05, r"$V_H$")
+maneuvers.text(V_H, 0 + 0.05, r"$V_{EOT}$")
 maneuvers.text(V_A, 0 + 0.05, r"$V_A$")
 maneuvers.text(V_C, 0 + 0.05, r"$V_C$")
 maneuvers.text(V_D, 0 + 0.05, r"$V_D$")
