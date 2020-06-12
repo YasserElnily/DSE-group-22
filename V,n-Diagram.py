@@ -7,7 +7,7 @@ from ISA_calculator import ISA
 
 
 h = 0#11887.2
-m_to = 914 #kg
+m_to = 775#kg
 
 
 print("Altitude = " + str(h) + "m")
