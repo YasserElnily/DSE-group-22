@@ -5,42 +5,37 @@ from numpy import *
 from matplotlib import pyplot as plt
 from ISA_calculator import ISA
 
-
+#values we need to check and change!!!
 h = 0#11887.2
 m_to = 775#kg
-
-
 print("Altitude = " + str(h) + "m")
-
-
-accuracy = 0.01
-
 C_L_max_clean = 1.27#2.023
-C_L_max_HLD = 2.36
-
-rho_0 = 1.225
-rho = ISA(h)[2]
-speed_of_sound = ISA(h)[3]
 S_ref = 10.05
-S_flapped = 1.25 * S_ref
-g = 9.80665
+cruise_speed= 220 #km/h
+C_L_alpha_M0 = 4.06 #lift curve at mach zero (nothing moment related)
+MAC = 1.5
+#VERY IMPORTANT COMMENT: one should check line 130 (N_k) for the maximum load factor at TO and 'line3' should be changed to correct formula
+
+#values that can be changed but probably will not anymore
 n_max = 2.5
 n_min = -1.
-
+accuracy = 0.01
 n_max_VTOL = 2
 n_min_VTOL = -0.5
 n_safe_to_conv = 1.22
 
+#fixed values
+rho_0 = 1.225
+rho = ISA(h)[2]
+speed_of_sound = ISA(h)[3]
+S_flapped = 1.25 * S_ref
+g = 9.80665
+C_L_max_HLD = 2.36 #does not need to be changed, it is not used
 n_max_HLD = 1.5
 #M_C = 0.79
-cruise_speed= 220 #km/h
 
-C_L_alpha_M0 = 4.06#5.634
-MAC = 1.5
+#calculations
 w = m_to*g/S_ref #wing loading
-
-
-
 
 V_S_new = sqrt(2 * m_to * g / (rho_0 * C_L_max_clean * S_ref))
 print(V_S_new)
@@ -71,9 +66,6 @@ while diff2 > 0.0000001:
     counter2=counter2+1
 V_S_1 = V_S_1_new
 print(V_S_1)
-
-V_F = 1.6 * V_S_1
-
 
 V_EAS = arange(0., V_D+accuracy, accuracy)#+0.00001*accuracy, accuracy)
 
@@ -123,10 +115,6 @@ for i in range(len(V_EAS)):
     if go_on_4 & (n1(V_EAS[i]) >= n_max_HLD):
         i_G = i
         go_on_4 = False
-        
-        
-
-
 
     #if go_on_3 & (V_EAS[i] <= V_S_1):
     #    line_HLD[i] = n_HLD(V_EAS[i])
@@ -137,28 +125,19 @@ for i in range(len(V_EAS)):
    # if go_on_4 & (n1(V_EAS[i]) >= n_HLD(V_S_1)):
      #   i_G = i
     #    go_on_4 = False
-    
-    
-    
+
 ########## VTOL envelope calculations
 n_K = 1.5 ############ Assumption!!!! Do proper power calculation (n_K is determined by maximum available lift at take-off)
-   
 line3 = zeros(V_EAS.shape)
-
-line3 = 0.5/15 * V_EAS + n_K
-
-    
-
-
-### fill line 3 with calculation about proprotor lift + wing lift
+line3 = 0.5 / 15 * V_EAS + n_K ### fill line 3 with calculation about proprotor lift + wing lift
 end_index_line3 = 0
 for i in range(len(line3)):
     if line3[i] <= n_max_VTOL:
         end_index_line3 = i
-        
-line3 = line3[0:end_index_line3+1]
 
-V_EAS_line3 = V_EAS[0:end_index_line3+1]
+line3 = line3[0:end_index_line3 + 1]
+
+V_EAS_line3 = V_EAS[0:end_index_line3 + 1]
 
 V_H = 0
 #find velocity where line1 (stall line of airplane mode) = 1.22
@@ -251,7 +230,8 @@ maneuvers.xaxis.set_ticks_position('bottom')
 maneuvers.grid(True)
 
 maneuvers.set_title("(V, n)-diagram for maneuvers")
-maneuvers.set_xlabel(r"           $V_{EAS}$")
+maneuvers.set_xlabel(r"$V_{EAS} [\frac{m}{s}]$")
+maneuvers.xaxis.set_label_coords(1.08, 0.32)
 maneuvers.set_ylabel(r"$n_m$")
 maneuvers.set_xlim(-2, V_D +5) 
 
