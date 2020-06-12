@@ -36,7 +36,7 @@ n_max_HLD = 1.5
 cruise_speed=160
 
 C_L_alpha_M0 = 4#5.634
-MAC = 1.1
+MAC = 1.46
 w = m_to*g/S_ref #wing loading
 
 
