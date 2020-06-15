@@ -16,7 +16,7 @@ Ixx = 121312332   #[m4]
 Iyy = 123123123   #[m4]
 Izz = 123123123   #[m4]
 
-def reaction_forces (condition, halfspan, m, Ixx, Iyy, Izz): #Conditions: VTO, cruise, VL
+def reaction_forces (condition, halfspan, m, Ixx, Iyy, Izz, T_vtol, T_cruise,w_drag,W_eng,w_weight,w_lift): #Conditions: VTO, cruise, VL
     
     #Reaction forces and moments at fuselage
     #LEFT WING TAKEN FOR REFERENCE
@@ -25,12 +25,12 @@ def reaction_forces (condition, halfspan, m, Ixx, Iyy, Izz): #Conditions: VTO, c
     #All reaction moments drawn counterclockwise (x to y, y to z, x to z)
         
     #General forces and loads
-    T_vtol = 5000   #[N]
-    T_cruise = 4000   #[N]
-    w_drag =  2.5   #[N/m]
-    W_eng = 400     #[N]
-    w_weight = 2.5  #[N/m]
-    w_lift = 2.5    #[N/m]
+    #T_vtol = 5000   #[N]
+    #T_cruise = 4000   #[N]
+    #w_drag =  2.5   #[N/m]
+    #W_eng = 400     #[N]
+    #w_weight = 2.5  #[N/m]
+    #w_lift = 2.5    #[N/m]
          
     if condition == "VTO":
         #Accelerations  
