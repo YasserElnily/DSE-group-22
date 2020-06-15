@@ -527,26 +527,20 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     #Rate of twist
     #-------------------------------------------------------------------------
 
-    Torque_due_to_shear_forces = abs(dy_Vx-y_neutral_axis)*-Vx+abs(dx_Vy-x_neutral_axis)*Vy
+    if abs(Vy)<0.5:
+        Vy = 0
+
+    if abs(Vx)<0.5:
+        Vx = 0
+
+    Torque_due_to_shear_forces = abs(dy_Vx-abs(eta_luru_corner))*-Vx+abs(dx_Vy-abs(xi_luru_corner))*Vy
 
     #print(Torque_due_to_shear_forces)
     J=Ixx+Iyy
-
+    
     angle_of_twist = Torque_due_to_shear_forces/(J*G)
     #print("Rate of twist", angle_of_twist_per_unit_length*180/np.pi)
 
-    """
-    constants = 1/(2*Am*G*t)
-
-    #int_of_total_flow = sum(total_shear_flow_upper*(length_upper_skin/len(mesh1)))+sum(total_shear_flow_right*(length_right_side/len(mesh1)))+sum(total_shear_flow_lower*(length_lower_skin/len(mesh1)))+sum(total_shear_flow_left*(length_left_side/len(mesh1)))
-    int_of_total_flow = qb1+qb2+qb3+qb4+qb5+qb6+qb7+qb8+qs0*len(mesh1)
-
-    rate_of_twist = int_of_total_flow*constants
-
-    rate_of_twist_deg = 180*rate_of_twist/(np.pi)
-    total_twist = rate_of_twist_deg*half_span
-    print(total_twist)
-    """
 
     return xi,eta,max_shear_upper, max_shear_loc_upper,max_shear_right, max_shear_loc_right,max_shear_lower, max_shear_loc_lower,max_shear_left, max_shear_loc_left,min_shear_upper, min_shear_loc_upper,min_shear_right, min_shear_loc_right,min_shear_lower, min_shear_loc_lower,min_shear_left, min_shear_loc_left,angle_of_twist
 
