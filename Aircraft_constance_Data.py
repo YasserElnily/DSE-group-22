@@ -80,7 +80,7 @@ def material(typ):
         E = 70 * 10**9 
         G = 27 * 10**9
     else: print("Material_Error")
-    return alpha_Al, n_al, sig_y, sig_ult, E, G
+    return alpha_Al, n_Al, sig_y, sig_ult, E, G
 
 #stringerdimension
 def stringer(material):
