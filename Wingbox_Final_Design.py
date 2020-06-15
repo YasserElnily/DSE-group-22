@@ -26,10 +26,10 @@ taper = 1
 chordroot = 1.72   # in m
 airfoil = 'airfoil.dat'
 
-t1 = 0.001 #Wanted top web thickness in m
-t2 = 0.001 #Wanted rear spar thickness in m
-t3 = 0.001 #Wanted bottom web thickness in m
-t4 = 0.001 #Wanted front spar thickness in m
+t1 = 0.0001 #Wanted top web thickness in m
+t2 = 0.0001 #Wanted rear spar thickness in m
+t3 = 0.0001 #Wanted bottom web thickness in m
+t4 = 0.0001 #Wanted front spar thickness in m
 
 t_s = 0.002 #Stringer thickness
 h_s = 0.02 #Stringer dimension
@@ -93,6 +93,7 @@ E = E_6061
 v = 0.33
 sig_y = sig_y6061
 sig_ult = sig_ult6061
+density = 2780 
 
 
 
@@ -149,21 +150,24 @@ def loadcase2(stepsize, chordroot, taper, span):
 #Take-off loadcase
 loadcasearray = [loadcase1(stepsize,chordroot,taper,span),loadcase2(stepsize,chordroot,taper,span)]
 
-for loadcase in loadcasearray: 
+weight = 0
 
+for loadcase in loadcasearray: 
     """[yloc,maxtauTskin,maxsigTskin,maxtauRspar,maxsigRspar,maxtauBskin,maxsigBskin,maxtauLspar,maxsigLspar]"""
     stressarray = np.empty([steps,10]) #do we need this?????????
-    
+    ylastspar = 0
+    ylastrivet = 0
+    ribbs = np.array([])
     nbottomstring = 0
     ntopstring = 0
     l4st,l2st,l1st,l3st,alpha,beta =  wingboxdimension(airfoil,frontspar,rearspar)
-    print("loadcase")
+    print("#####################################loadcase#####################################")
     
     
     for force in loadcase:
-        print("run")
         dstring = 1 
-        y = force[0]                
+        y = force[0]
+                        
         c = chordroot*(taper + (y)/halfspan)
         while dstring > 0:
             dstring = nbottomstring + ntopstring    
@@ -198,27 +202,50 @@ for loadcase in loadcasearray:
             print("y {:.3e}".format(y),"Vx {:.3e}".format(Vx),"Vy {:.3e}".format(Vy),"Mx {:.3e}".format(Mx),"Mz {:.3e}".format(Mz))
             print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc))
             #TopsKing
-            CCstress = stiffendskincalculation(chord,y,ntopstring,E,v,stringer(material("AL6061")))
+            CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
             while CCstress < sigma5:
                 ntopstring+=1
-                CCstress = stiffendskincalculation(chord,y,ntopstring,E,v,stringer(material("AL6061")))
+                CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
                 if ntopstring > 10:
                     print("BREAK CCSTRESS")
                     break
             #Bottomsking
-            CCstress = stiffendskincalculation(chord,y,nbottomstring,E,v,stringer(material("AL6061")))
+            CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
             while CCstress < sigma7:
                 nbottomstring+=1
-                CCstress = stiffendskincalculation(chord,y,nbottomstring,E,v,stringer(material("AL6061")))
+                CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
                 if nbottomstring > 10:
                     print("BREAK CCSTRESS")
                     break    
             dstring = - nbottomstring - ntopstring
-        print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring)
+        print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
+    
+        number_of_stiff = 4 + ntopstring + nbottomstring
+    
+        Dlastspar = y - ylastspar
+        tau_cr = shearbucklingstress(Dlastspar,t1,E,v)
+        if tau_cr<tau1 and tau_cr<tau2 and tau_cr<tau3 and tau_cr<tau4 and tau_cr<abs(tau5) and tau_cr<abs(tau6) and tau_cr<abs(tau7) and tau_cr<abs(tau8):
+            ribbs = np.append(ribbs,y)
+            print("rib")
         
-        ##########
-        #some space for stringer pitch
-        #some space for rib pitch
-        #some space for weight estimation
-        ##########
+        rivet = "countersunk"
+        Dlastrivet = y - ylastrivet
+        sig_cr =  rivetbuckling(rivet,E,t_s,Dlastrivet)
+        if sig_cr<sigma1 and sig_cr<sigma2 and sig_cr<sigma3 and sig_cr<sigma4 and sig_cr<abs(sigma5) and sig_cr<abs(sigma6) and sig_cr<abs(sigma7) and sig_cr<abs(sigma8):
+            rivets = rivets + number_of_stiff
+            print("rivet")
+        print(tau_cr,sig_cr)
+        # weight calculation
+        
+        stiffweight = stiff_weight(t_s,h_s,density,number_of_stiff,stepsize) 
+        webs_area = l1*t1+l2*t2+l3*t3+l4*t4
+        webs_vol = stepsize*webs_area
+        webs_weight = webs_vol*density
+        weight = stiffweight + webs_weight + weight
+            ##########
+            #some space for stringer pitch
+            #some space for rib pitch
+            #some space for weight estimation
+            ##########
             
+    print(weight)
