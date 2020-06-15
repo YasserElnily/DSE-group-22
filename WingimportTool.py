@@ -9,13 +9,6 @@ import numpy as np
 import math
 
 
-#importing the Airfoildata
-inpu = np.loadtxt(fname = 'NACA2415.dat',dtype=str)[1:]
-data = inpu.astype(np.float)
-
-#frontspar
-fr = 0.15
-
 
 def interpolation(x1,x2,y1,y2,a):
     interp = y2 + ((y1-y2)/(x1-x2)) * (a-x2)
@@ -56,18 +49,15 @@ def wingboxcoordinates(filename,sparxloc):
     
     return sparxloc,B,C
 
-airfoil = 'NACA2415.dat'
-frontspar   = .15
-rearspar    = .60
 
-#frontspar
-x,y1,y2 = wingboxcoordinates(airfoil,frontspar)
-print(x,y1,y2)
+# #frontspar
+# x,y1,y2 = wingboxcoordinates(airfoil,frontspar)
+# print(x,y1,y2)
 
 
-#rearspar
-x,y1,y2 = wingboxcoordinates(airfoil,rearspar)
-print(x,y1,y2)
+# #rearspar
+# x,y1,y2 = wingboxcoordinates(airfoil,rearspar)
+# print(x,y1,y2)
 
 def andreiinput(airfoil,frontspar,rearspar):
     xf, yf1,yf2 =  wingboxcoordinates(airfoil,frontspar)
@@ -82,10 +72,10 @@ def wingboxdimension(airfoil,frontspar,rearspar):
     
     #frontspar
     hf = abs(yf1) + abs(yf2)
-    print(hf)
+    
     #rearspar
     hr = abs(yr1) + abs(yr2)
-    print(hr)
+    
     
     #topskin
     ltop = math.sqrt((xr-xf)**2 + (yf1-yr1)**2)

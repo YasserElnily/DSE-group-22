@@ -68,8 +68,27 @@ bv = 1.5 #[m], the span of the v tail, can be chosen accordingly
 B = 25 #[deg] The acceptable side slip angle for the aircraft: chosen by engineers.
 #lv = lf - ShSmin(3, 'no')[0] #Assuming the Y acts at the end of the fuselage and lv is the length to xLEMAC
 
+"""structural inputs"""
+#materials
+#AL6061
+def material(typ):
+    if typ == "AL6061":
+        alpha_Al = 0.8
+        n_Al = 0.6
+        sig_y = 280 * 10**6
+        sig_ult = 338 * 10**6   
+        E = 70 * 10**9 
+        G = 27 * 10**9
+    else: print("Material_Error")
+    return alpha_Al, n_Al, sig_y, sig_ult, E, G
 
-
+#stringerdimension
+def stringer(material):
+    alpha_Al, n_al, sig_y6061, sig_ulti6061, E_6061, G_6061 = material
+    #dimensions
+    h_s = 0.002 #hight of the stringer
+    t_s = 0.020 #thickness of the stringer
+    return h_s, t_s, alpha_Al, n_al, sig_y6061, sig_ulti6061, E_6061, G_6061
 
 
 
