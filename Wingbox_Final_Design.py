@@ -97,17 +97,18 @@ sig_ult = sig_ult6061
 
 
 #creation of the forces array
-stepsize = 0.7 #meter
+stepsize = 0.45 #meter
 steps = int(halfspan/stepsize+1)
 
 #Take-off loadcase 
 def loadcase1(stepsize,chordroot,taper,span):
     loadcase1 = np.empty([steps,6])
+    
     for n in range(steps):
         #the y location
         y = stepsize *n
         c = chordroot-2*(chordroot-chordroot*taper)*y/(span)
-    
+        
         loadcase1[n,0] = y
         #shear forcesz
         loadcase1[n,1] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[2]
@@ -147,7 +148,6 @@ def loadcase2(stepsize, chordroot, taper, span):
 
 #Take-off loadcase
 loadcasearray = [loadcase1(stepsize,chordroot,taper,span),loadcase2(stepsize,chordroot,taper,span)]
-
 
 for loadcase in loadcasearray: 
 
