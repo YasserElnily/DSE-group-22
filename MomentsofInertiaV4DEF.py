@@ -22,7 +22,7 @@ import numpy as np
 # specified. 
 ##############################
 
-'''
+
 c = 1               #Chord length
 
 l1 = 0.35*c           #Wingbox dimensions
@@ -42,9 +42,9 @@ t4 = 0.00013667                 #Leading Edge skin thickness
  
 t_s = 0.002                       #stringer dimensions
 h_s = 0.025
-'''
 
-def mom_of_inertia (c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s):
+
+def mom_of_inertia (c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s,nstringers_top,nstringers_bottom):
     w_s = h_s + t_s
     A_s = h_s*t_s + w_s*t_s        #Cross-sectional area of the corner stiffeners
     
@@ -103,29 +103,28 @@ def mom_of_inertia (c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s):
     
     
     #step2 : add the stringers
-    n_stringers = 4                 #Change this number to add more stringers
+    n_stringers = 4 +nstringers_top + nstringers_bottom                #Change this number to add more stringers
     x_positions_stringers = np.array([0.15, 0.5, 0.5, 0.15])*c - 0.15*c                #Change this array to add more stringers
     y_positions_stringers = np.array([0.05341297,  0.0529245 , -0.0529245 , -0.05341297])*c + 0.05341297*c   #Change this array to add more stringers
     #more stringers
-    nstringers_top = 1
-    nstringers_bottom = 0
-    add_stringers = np.array([[],[]])
-    
+
+    add_stringer = np.array([[],[]])
+
     for n in range(1,nstringers_top+1):
         dx = (x_positions_stringers[1]-x_positions_stringers[0]) / (nstringers_top+1)
         dy = (y_positions_stringers[1]-y_positions_stringers[0]) / (nstringers_top+1)
-        add_stringer = np.append(add_stringers,[[dx*n+x_positions_stringers[0]],[dy*n+y_positions_stringers[0]]],axis=1)
+        add_stringer = np.append(add_stringer,[[dx*n+x_positions_stringers[0]],[dy*n+y_positions_stringers[0]]],axis=1)
         
     for n in range(1,nstringers_bottom+1):
         dx = (x_positions_stringers[1]-x_positions_stringers[0]) / (nstringers_bottom+1)
         dy = (y_positions_stringers[1]-y_positions_stringers[0]) / (nstringers_bottom+1)
-        add_stringer = np.append(add_stringers,[[dx*n+x_positions_stringers[0]],[dy*n+y_positions_stringers[0]]],axis=1)
-        
+        add_stringer = np.append(add_stringer,[[dx*n+x_positions_stringers[0]],[dy*n+y_positions_stringers[0]]],axis=1)
+
         
     x_positions_stringers = np.append(x_positions_stringers,add_stringer[0])
     y_positions_stringers = np.append(y_positions_stringers,add_stringer[1])
     Areas_stringers = np.ones(n_stringers)*A_s
-    
+
     
     #step3: set up arrays
     x_positions_skin = np.array([x_pos_bottom, x_pos_top, x_pos_LE, x_pos_TE])
@@ -137,7 +136,6 @@ def mom_of_inertia (c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s):
     x_positions = np.append(x_positions_skin, x_positions_stringers)
     y_positions = np.append(y_positions_skin, y_positions_stringers)
     Areas = np.append(Areas_skin, Areas_stringers)
-    
     
     x_centroid_box = np.sum(np.multiply(Areas,x_positions))/np.sum(Areas)
     y_centroid_box = np.sum(np.multiply(Areas,y_positions))/np.sum(Areas)

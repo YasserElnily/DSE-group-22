@@ -34,9 +34,12 @@ w_s = 0
 h_s = 0
 t_s = 0
 b = 0
-        
-def stiffendskincalculation(chord,t,nstring,E,v):
-    from Aircraft_constance_Data import *
+
+
+    
+ 
+def stiffendskincalculation(chord,t,nstring,E,v,stringer):
+    h_s, t_s, alpha_Al, n_al, sig_y6061, sig_ulti6061, E_6061, G_6061 = stringer
     #stiffener components: Assuming L stiffener, both parts SSFS 
     C_s = 0.425
     sigma_cc_base = sig_y * alpha_Al * (C_s/sig_y * np.pi**2 * E/(12*(1-v**2)) * (t_s/h_s)**2)**(1-n_Al)

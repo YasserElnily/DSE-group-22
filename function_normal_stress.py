@@ -61,8 +61,9 @@ min_norm_left
 min_norm_loc_left
 """
 
+import numpy as np
 
-def normal_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_skin,length_left_side,angle_from_horizontal_upper,angle_from_horizontal_lower,width,x_centroid,y_centroid,x_neutral_axis,y_neutral_axis,Ixx,Iyy,Ixy,My,Mx)
+def normal_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_skin,length_left_side,angle_from_horizontal_upper,angle_from_horizontal_lower,width,x_centroid,y_centroid,x_neutral_axis,y_neutral_axis,Ixx,Iyy,Ixy,My,Mx):
 
     #-------------------------------------------------------------------------
     #Convert length to mesh points

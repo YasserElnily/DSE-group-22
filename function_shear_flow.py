@@ -72,7 +72,7 @@ min_shear_left = Min shear stress in leading edge spar panel
 min_shear_loc_left = Location of the above in the upper skin panel (given as length)
 angle_of_twist = angle of twist in the cross section (given in rad/m)
 """
-
+import numpy as np
 
 
 def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_skin,length_left_side,angle_from_horizontal_upper,angle_from_horizontal_lower,width,x_centroid,y_centroid,x_neutral_axis,y_neutral_axis,Ixx,Iyy,Ixy,G,Vy,Vx,x_Vy,z_Vx):
@@ -215,11 +215,11 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     #Defining constant shear flow q0 through the cut closed section
 
     q0 = (q01/(G*t1)+q02/(G*t2)+q03/(G*t3)+q04/(G*t4))/(length_upper_skin/(G*t1)+length_right_side/(G*t2)+length_lower_skin/(G*t3)+length_left_side/(G*t4))
-    print(q01)
-    print(q02)
-    print(q03)
-    print(q04)
-    print(q0)
+    # print(q01)
+    # print(q02)
+    # print(q03)
+    # print(q04)
+    # print(q0)
 
     Am = 0.5*(length_left_side+length_right_side)*(width)
     #print(Am)
@@ -229,7 +229,7 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
 
     xi_luru_corner = (-2*q0*Am+sum(flow_right*(length_right_side/len(mesh1)))*width+sum(flow_lower*(length_lower_skin/len(mesh1)))*length_left_side*np.cos(angle_from_horizontal_lower))/Vy
 
-    print("Shear center x-coordinate", round(abs(xi_luru_corner),3))
+    # print("Shear center x-coordinate", round(abs(xi_luru_corner),3))
 
 
     #Distance from shear center to centroid
@@ -363,11 +363,11 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     #Defining constant shear flow q0 through the cut closed section
 
     q0_x = (q05/(G*t1)+q06/(G*t2)+q07/(G*t3)+q08/(G*t4))/(length_upper_skin/(G*t1)+length_right_side/(G*t2)+length_lower_skin/(G*t3)+length_left_side/(G*t4))
-    print(q05)
-    print(q06)
-    print(q07)
-    print(q08)
-    print(q0_x)
+    # print(q05)
+    # print(q06)
+    # print(q07)
+    # print(q08)
+    # print(q0_x)
 
     Am = 0.5*(length_left_side+length_right_side)*(width)
     #print(Am)
@@ -377,7 +377,7 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
 
     eta_luru_corner = (-2*q0_x*Am-sum(flow_right_x*(length_right_side/len(mesh1)))*width+sum(flow_lower_x*(length_lower_skin/len(mesh1)))*length_left_side*np.cos(angle_from_horizontal_lower))/Vx
 
-    print("Shear center y-coordinate", round(abs(eta_luru_corner),3))
+    # print("Shear center y-coordinate", round(abs(eta_luru_corner),3))
 
 
     #Distance from shear center to centroid
@@ -487,10 +487,10 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     total_shear_flow_lower = np.array(total_shear_flow_lower)
     total_shear_flow_left = np.array(total_shear_flow_left)
 
-    print(total_shear_flow_upper)
-    print(total_shear_flow_right)
-    print(total_shear_flow_lower)
-    print(total_shear_flow_left)
+    # print(total_shear_flow_upper)
+    # print(total_shear_flow_right)
+    # print(total_shear_flow_lower)
+    # print(total_shear_flow_left)
 
     max_shear_upper = max(total_shear_flow_upper)/t1/1000000
     max_shear_right = max(total_shear_flow_right)/t2/1000000
@@ -503,10 +503,10 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     max_shear_loc_left = np.argmax(total_shear_flow_left)*length_left_side/len(mesh1)
 
 
-    print("Max shear stress in upper skin [MPa] and location", max_shear_upper, max_shear_loc_upper)
-    print("Max shear stress in right skin [MPa] and location", max_shear_right, max_shear_loc_right)
-    print("Max shear stress in lower skin [MPa] and location", max_shear_lower, max_shear_loc_lower)
-    print("Max shear stress in left skin [MPa] and location", max_shear_left, max_shear_loc_left)
+    # print("Max shear stress in upper skin [MPa] and location", max_shear_upper, max_shear_loc_upper)
+    # print("Max shear stress in right skin [MPa] and location", max_shear_right, max_shear_loc_right)
+    # print("Max shear stress in lower skin [MPa] and location", max_shear_lower, max_shear_loc_lower)
+    # print("Max shear stress in left skin [MPa] and location", max_shear_left, max_shear_loc_left)
 
     min_shear_upper = min(total_shear_flow_upper)/t1/1000000
     min_shear_right = min(total_shear_flow_right)/t2/1000000
@@ -518,10 +518,10 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     min_shear_loc_lower = np.argmin(total_shear_flow_lower)*length_lower_skin/len(mesh1)
     min_shear_loc_left = np.argmin(total_shear_flow_left)*length_left_side/len(mesh1)    
 
-    print("Min shear stress in upper skin [MPa] and location", min_shear_upper, min_shear_loc_upper)
-    print("Min shear stress in right skin [MPa] and location", min_shear_right, min_shear_loc_right)
-    print("Min shear stress in lower skin [MPa] and location", min_shear_lower, min_shear_loc_lower)
-    print("Min shear stress in left skin [MPa] and location", min_shear_left, min_shear_loc_left)
+    # print("Min shear stress in upper skin [MPa] and location", min_shear_upper, min_shear_loc_upper)
+    # print("Min shear stress in right skin [MPa] and location", min_shear_right, min_shear_loc_right)
+    # print("Min shear stress in lower skin [MPa] and location", min_shear_lower, min_shear_loc_lower)
+    # print("Min shear stress in left skin [MPa] and location", min_shear_left, min_shear_loc_left)
 
     #-------------------------------------------------------------------------
     #Rate of twist
