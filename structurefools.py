@@ -37,7 +37,8 @@ b = 0
 
 import matplotlib.pyplot as plt
 
-def plotting(x,y):
+def plotting(x,y,name):
+    plt.title("name")
     plt.plot(x,y)
     plt.show()
     

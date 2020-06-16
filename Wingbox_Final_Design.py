@@ -163,12 +163,12 @@ for loadcase in loadcasearray:
     ntopstring = 0
     l4st,l2st,l1st,l3st,alpha,beta =  wingboxdimension(airfoil,frontspar,rearspar)
     print("#####################################loadcase#####################################")
-    plotting(loadcase[:,0],loadcase[:,1])
-    plotting(loadcase[:,0],loadcase[:,2])
-    plotting(loadcase[:,0],loadcase[:,3])
-    plotting(loadcase[:,0],loadcase[:,4])
-    plotting(loadcase[:,0],loadcase[:,5])
-    print(loadcase[0])
+    plotting(loadcase[:,0],loadcase[:,1],"shearz")
+    plotting(loadcase[:,0],loadcase[:,2],"shearx")
+    plotting(loadcase[:,0],loadcase[:,3],"momentz")
+    plotting(loadcase[:,0],loadcase[:,4],"momentx")
+    plotting(loadcase[:,0],loadcase[:,5],"torsion")
+
     for force in loadcase:
         dstring = 1 
         y = force[0]
