@@ -29,7 +29,7 @@ airfoil = 'airfoil.dat'
 t1 = 0.001 #Wanted top web thickness in m
 t2 = 0.001 #Wanted rear spar thickness in m
 t3 = 0.001 #Wanted bottom web thickness in m
-t4 = 0.00165 #Wanted front spar thickness in m
+t4 = 0.00125 #Wanted front spar thickness in m
 
 t_s = 0.002 #Stringer thickness
 h_s = 0.02 #Stringer dimension
@@ -183,7 +183,7 @@ for loadcase in loadcasearray:
         dstring = 1 
         y = force[0]
                         
-        c = chordroot*(taper + (y)/halfspan)
+        c = chordroot#*(taper + (y)/halfspan)
         while dstring > 0:
             dstring = nbottomstring + ntopstring    
             
@@ -236,9 +236,9 @@ for loadcase in loadcasearray:
         #print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
         
         number_of_stiff = 4 + ntopstring + nbottomstring
-    
+        
         Dlastspar = hf
-        if len(ribbs):
+        if len(ribbs) == 0:
             a = 1
         else:
             a = len(ribbs)

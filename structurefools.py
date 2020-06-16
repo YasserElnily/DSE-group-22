@@ -113,11 +113,11 @@ def shearbucklingstress(D,t,E,v,a,halfspan):
         a_b_ratio = halfspan/a/D
         if a_b_ratio>2:
             k = 6
-        elif a_b_ratio>1.5 and a_b_ratio=<2:
+        elif a_b_ratio>1.5 and a_b_ratio<=2:
             k = 7
-        elif a_b_ratio>1 and a_b_ratio=<1.5:
+        elif a_b_ratio>1 and a_b_ratio<=1.5:
             k = 8
-        elif a_b_ratio=<1:
+        elif a_b_ratio<=1:
             k = 9
         tau_cr = k * np.pi**2 * E* (t/D)**2 /(12*(1-v**2))
         return tau_cr
