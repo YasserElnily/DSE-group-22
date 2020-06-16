@@ -238,7 +238,11 @@ for loadcase in loadcasearray:
         number_of_stiff = 4 + ntopstring + nbottomstring
     
         Dlastspar = hf
-        tau_cr = shearbucklingstress(Dlastspar,t4,E,v)/(10**6)
+        if len(ribbs):
+            a = 1
+        else:
+            a = len(ribbs)
+        tau_cr = shearbucklingstress(Dlastspar,t4,E,v,a,halfspan)/(10**6)
         if tau_cr<tau2 or tau_cr<tau4 or tau_cr<abs(tau6) or tau_cr<abs(tau8):
             ribbs = np.append(ribbs,y)
             #print("rib")
