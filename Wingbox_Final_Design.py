@@ -182,7 +182,8 @@ for loadcase in loadcasearray:
     for force in loadcase:
         dstring = 1 
         y = force[0]
-                        
+        nbottomstring = 0
+        ntopstring = 0                        
         c = chordroot#*(taper + (y)/halfspan)
         while dstring > 0:
             dstring = nbottomstring + ntopstring    
@@ -215,20 +216,20 @@ for loadcase in loadcasearray:
             #5,6,7,8 min stresses on webs 1,2,3,4
             #loc gives position of max/min stress as A POSITION IN METERS w.r.t the web
             #print("y {:.3e}".format(y),"Vx {:.3e}".format(Vx),"Vy {:.3e}".format(Vy),"Mx {:.3e}".format(Mx),"Mz {:.3e}".format(Mz))
-            print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc))
             #TopsKing
-            CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
+            CCstress, b, bacc = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
+            
             while CCstress < abs(sigma5):
                 ntopstring+=1
-                CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
+                CCstress, b, bacc = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
                 if ntopstring > 86:
                     print("BREAK CCSTRESS")
                     break
             #Bottomsking
-            CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
+            CCstress, b, bacc = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
             while CCstress < abs(sigma7):
                 nbottomstring+=1
-                CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
+                CCstress, b, bacc = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
                 if nbottomstring > 86:
                     print("BREAK CCSTRESS")
                     break    
@@ -236,7 +237,6 @@ for loadcase in loadcasearray:
         #print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
         
         number_of_stiff = 4 + ntopstring + nbottomstring
-        
         Dlastspar = hf
         if len(ribbs) == 0:
             a = 1
@@ -269,6 +269,7 @@ for loadcase in loadcasearray:
             #some space for rib pitch
             #some space for weight estimation
             ##########
+        print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc),"number of stringers",number_of_stiff)
     
     print("")     
     print("Weight = ", weight)
