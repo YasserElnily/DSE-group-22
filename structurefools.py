@@ -108,9 +108,17 @@ def rivetbuckling(rivet,E,t,s):
         sig_ir = 0.9 * c * E * (t/s)**2 
         return sig_ir
     
-def shearbucklingstress(D,t,E,v):
+def shearbucklingstress(D,t,E,v,a,halfspan):
     if D != 0:
-        k = 7
+        a_b_ratio = halfspan/a/D
+        if a_b_ratio>2:
+            k = 6
+        elif a_b_ratio>1.5 and a_b_ratio=<2:
+            k = 7
+        elif a_b_ratio>1 and a_b_ratio=<1.5:
+            k = 8
+        elif a_b_ratio=<1:
+            k = 9
         tau_cr = k * np.pi**2 * E* (t/D)**2 /(12*(1-v**2))
         return tau_cr
     else:
