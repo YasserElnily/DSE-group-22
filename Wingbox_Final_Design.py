@@ -218,18 +218,18 @@ for loadcase in loadcasearray:
             print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc))
             #TopsKing
             CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
-            while CCstress < sigma5:
+            while CCstress < abs(sigma5):
                 ntopstring+=1
                 CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
-                if ntopstring > 30:
+                if ntopstring > 86:
                     print("BREAK CCSTRESS")
                     break
             #Bottomsking
             CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
-            while CCstress < sigma7:
+            while CCstress < abs(sigma7):
                 nbottomstring+=1
                 CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
-                if nbottomstring > 30:
+                if nbottomstring > 86:
                     print("BREAK CCSTRESS")
                     break    
             dstring = - nbottomstring - ntopstring
