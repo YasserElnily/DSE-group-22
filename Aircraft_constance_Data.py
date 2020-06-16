@@ -33,7 +33,7 @@ wf = 1 #[m] (from catia?)
 airfoil     = 'airfoil.dat' #this is the dat file of the coordinates of the airfoil geometry 
 frontspar   = .15 #front spar at 15% of the chord.
 rearspar    = .60  #rear spar at 60% of the chord.
-chord       = 2 #m
+chord       = 1.72 #m
 span        = 7 #m
 taper       = 0 
 
