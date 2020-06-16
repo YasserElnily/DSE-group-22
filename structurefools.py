@@ -92,22 +92,30 @@ def stiffendskincalculation(chord,t,nstring,E,v,stringer):
 
 def rivetbuckling(rivet,E,t,s):
     #rivet spacing
-
-    if rivet == "countersunk":
-        c = 1
-    elif rivet == "pop":
-        c = 2.1
-    elif rivet == "brazier":
-        c = 3
-    
-    sig_ir = 0.9 * c * E * (t/s)**2 
-    return sig_ir
+    if s==0:
+        print("Sigma_ir is 0")
+        return 0
+        
+        
+    else:
+        if rivet == "countersunk":
+            c = 1
+        elif rivet == "pop":
+            c = 2.1
+        elif rivet == "brazier":
+            c = 3
+        
+        sig_ir = 0.9 * c * E * (t/s)**2 
+        return sig_ir
     
 def shearbucklingstress(D,t,E,v):
-    k = 4
-    tau_cr = k * np.pi**2 * E* (t/D)**2 /(12*(1-v**2))
-    return tau_cr
-    
+    if D != 0:
+        k = 7
+        tau_cr = k * np.pi**2 * E* (t/D)**2 /(12*(1-v**2))
+        return tau_cr
+    else:
+        print("tau_cr is 0")
+        return 0
 
 def stiff_weight(t_s,h_s,density,number_of_stiff,stepsize):
     #area of stiffeners

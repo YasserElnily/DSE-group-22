@@ -29,7 +29,7 @@ airfoil = 'airfoil.dat'
 t1 = 0.001 #Wanted top web thickness in m
 t2 = 0.001 #Wanted rear spar thickness in m
 t3 = 0.001 #Wanted bottom web thickness in m
-t4 = 0.001 #Wanted front spar thickness in m
+t4 = 0.00165 #Wanted front spar thickness in m
 
 t_s = 0.002 #Stringer thickness
 h_s = 0.02 #Stringer dimension
@@ -108,7 +108,7 @@ def loadcase1(stepsize,chordroot,taper,span):
     for n in range(steps):
         #the y location
         y = stepsize *n
-        c = chordroot-2*(chordroot-chordroot*taper)*y/(span)
+        c = chordroot#-2*(chordroot-chordroot*taper)*y/(span)
         
         loadcase1[n,0] = y
         #shear forcesz
@@ -135,7 +135,7 @@ def loadcase2(stepsize, chordroot, taper, span):
     for n in range(steps):
         #the y location
         y = stepsize *n
-        c = chordroot-2*(chordroot-chordroot*taper)*y/(span)
+        c = chordroot#-2*(chordroot-chordroot*taper)*y/(span)
         
         loadcase2[n,0] = y
         #shear forcesz
@@ -234,20 +234,20 @@ for loadcase in loadcasearray:
                     break    
             dstring = - nbottomstring - ntopstring
         #print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
-    
+        
         number_of_stiff = 4 + ntopstring + nbottomstring
     
-        Dlastspar = y - ylastspar
-        tau_cr = shearbucklingstress(Dlastspar,t1,E,v)
-        if tau_cr<tau1 or tau_cr<tau2 or tau_cr<tau3 or tau_cr<tau4 or tau_cr<abs(tau5) or tau_cr<abs(tau6) or tau_cr<abs(tau7) or tau_cr<abs(tau8):
+        Dlastspar = hf
+        tau_cr = shearbucklingstress(Dlastspar,t4,E,v)/(10**6)
+        if tau_cr<tau2 or tau_cr<tau4 or tau_cr<abs(tau6) or tau_cr<abs(tau8):
             ribbs = np.append(ribbs,y)
-            ylastspar = y
             #print("rib")
         
         rivet = "countersunk"
         Dlastrivet = y - ylastrivet
+        #print("Dlastrivet: ", Dlastrivet)
         sig_cr = rivetbuckling(rivet,E,t_s,Dlastrivet)/10**6
-
+        
         if sig_cr<sigma1 or sig_cr<sigma2 or sig_cr<sigma3 or sig_cr<sigma4 or sig_cr<abs(sigma5) or sig_cr<abs(sigma6) or sig_cr<abs(sigma7) or sig_cr<abs(sigma8):
             rivets = rivets + number_of_stiff
             ylastrivet = y
