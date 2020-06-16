@@ -150,10 +150,11 @@ def loadcase2(stepsize, chordroot, taper, span):
 #Take-off loadcase
 loadcasearray = [loadcase1(stepsize,chordroot,taper,span),loadcase2(stepsize,chordroot,taper,span)]
 
-weight = 0
+
 
 for loadcase in loadcasearray: 
     """[yloc,maxtauTskin,maxsigTskin,maxtauRspar,maxsigRspar,maxtauBskin,maxsigBskin,maxtauLspar,maxsigLspar]"""
+    weight = 0
     stressarray = np.empty([steps,10]) #do we need this?????????
     ylastspar = 0
     ylastrivet = 0
@@ -257,3 +258,4 @@ for loadcase in loadcasearray:
     print("Weight = ", weight)
     print("Number of rivets needed: ", rivets)
     print("Number of ribs needed: ", len(ribbs))
+    print("Number of stiffeners: ", number_of_stiff)
