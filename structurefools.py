@@ -35,7 +35,11 @@ h_s = 0
 t_s = 0
 b = 0
 
+import matplotlib.pyplot as plt
 
+def plotting(x,y):
+    plt.plot(x,y)
+    plt.show()
     
  
 def stiffendskincalculation(chord,t,nstring,E,v,stringer):
@@ -86,8 +90,7 @@ def stiffendskincalculation(chord,t,nstring,E,v,stringer):
     return sigma_cc_panel
 
 def rivetbuckling(rivet,E,t,s):
-    rivet = "pop"       #countersunk, brazier or pop rivets
-    s = 0.01            #rivet spacing
+    #rivet spacing
 
     if rivet == "countersunk":
         c = 1
@@ -97,6 +100,7 @@ def rivetbuckling(rivet,E,t,s):
         c = 3
     
     sig_ir = 0.9 * c * E * (t/s)**2 
+    return sig_ir
     
 def shearbucklingstress(D,t,E,v):
     k = 4
@@ -104,3 +108,13 @@ def shearbucklingstress(D,t,E,v):
     return tau_cr
     
 
+def stiff_weight(t_s,h_s,density,number_of_stiff,stepsize):
+    #area of stiffeners
+    w_s = h_s + t_s
+    A_s = h_s*t_s + w_s*t_s
+
+    stiffeners_area = number_of_stiff*A_s
+    stiffeners_vol = stiffeners_area*stepsize
+    stiffeners_weight = stiffeners_vol*density
+    
+    return stiffeners_weight

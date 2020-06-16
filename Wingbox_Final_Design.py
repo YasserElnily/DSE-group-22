@@ -45,7 +45,7 @@ safety_factor = 1.5
 aircraft_mass = 700 
 wingloading = 0 #lift distribution
 thrust =  0 #
-vtol_thrust = 0 #should be separated from thrust to run everything at once
+vtol_thrust = 5900 #should be separated from thrust to run everything at once
 controlloads_hor = 0 #horizontal control loads
 controlloads_ver = 0 #vertical control loads
 dragloading = 0 #drag distribution
@@ -98,7 +98,7 @@ density = 2780
 
 
 #creation of the forces array
-stepsize = 0.45 #meter
+stepsize = 0.15 #meter
 steps = int(halfspan/stepsize+1)
 
 #Take-off loadcase 
@@ -112,15 +112,15 @@ def loadcase1(stepsize,chordroot,taper,span):
         
         loadcase1[n,0] = y
         #shear forcesz
-        loadcase1[n,1] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[2]
+        loadcase1[n,1] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[2]
         #shear forcesx
-        loadcase1[n,2] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[0]
+        loadcase1[n,2] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
         #momentz
-        loadcase1[n,3] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[5]
+        loadcase1[n,3] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[5]
         #momentx
-        loadcase1[n,4] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[3]
+        loadcase1[n,4] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[3]
         #Torsion
-        loadcase1[n,5] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0)[4]
+        loadcase1[n,5] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[4]
         return loadcase1
 
 
@@ -134,15 +134,15 @@ def loadcase2(stepsize, chordroot, taper, span):
         
         loadcase2[n,0] = y
         #shear forcesz
-        loadcase2[n,1] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0)[2]
+        loadcase2[n,1] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[2]
         #shear forcesx
-        loadcase2[n,2] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0)[0]
+        loadcase2[n,2] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
         #momentz
-        loadcase2[n,3] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0)[5]
+        loadcase2[n,3] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[5]
         #momentx
-        loadcase2[n,4] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0)[3]
+        loadcase2[n,4] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[3]
         #Torsion
-        loadcase2[n,5] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0)[4]
+        loadcase2[n,5] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[4]
     return loadcase2
 
 
@@ -158,12 +158,17 @@ for loadcase in loadcasearray:
     ylastspar = 0
     ylastrivet = 0
     ribbs = np.array([])
+    rivets = 0
     nbottomstring = 0
     ntopstring = 0
     l4st,l2st,l1st,l3st,alpha,beta =  wingboxdimension(airfoil,frontspar,rearspar)
     print("#####################################loadcase#####################################")
-    
-    
+    plotting(loadcase[:,0],loadcase[:,1])
+    plotting(loadcase[:,0],loadcase[:,2])
+    plotting(loadcase[:,0],loadcase[:,3])
+    plotting(loadcase[:,0],loadcase[:,4])
+    plotting(loadcase[:,0],loadcase[:,5])
+    print(loadcase[0])
     for force in loadcase:
         dstring = 1 
         y = force[0]
@@ -199,14 +204,14 @@ for loadcase in loadcasearray:
             #1,2,3,4 max stresses on webs 1,2,3,4
             #5,6,7,8 min stresses on webs 1,2,3,4
             #loc gives position of max/min stress as A POSITION IN METERS w.r.t the web
-            print("y {:.3e}".format(y),"Vx {:.3e}".format(Vx),"Vy {:.3e}".format(Vy),"Mx {:.3e}".format(Mx),"Mz {:.3e}".format(Mz))
+            #print("y {:.3e}".format(y),"Vx {:.3e}".format(Vx),"Vy {:.3e}".format(Vy),"Mx {:.3e}".format(Mx),"Mz {:.3e}".format(Mz))
             print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc))
             #TopsKing
             CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
             while CCstress < sigma5:
                 ntopstring+=1
                 CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
-                if ntopstring > 10:
+                if ntopstring > 30:
                     print("BREAK CCSTRESS")
                     break
             #Bottomsking
@@ -214,28 +219,28 @@ for loadcase in loadcasearray:
             while CCstress < sigma7:
                 nbottomstring+=1
                 CCstress = stiffendskincalculation(chord,t3,nbottomstring,E,v,stringer(material("AL6061")))
-                if nbottomstring > 10:
+                if nbottomstring > 30:
                     print("BREAK CCSTRESS")
                     break    
             dstring = - nbottomstring - ntopstring
-        print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
+        #print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
     
         number_of_stiff = 4 + ntopstring + nbottomstring
     
         Dlastspar = y - ylastspar
         tau_cr = shearbucklingstress(Dlastspar,t1,E,v)
-        if tau_cr<tau1 and tau_cr<tau2 and tau_cr<tau3 and tau_cr<tau4 and tau_cr<abs(tau5) and tau_cr<abs(tau6) and tau_cr<abs(tau7) and tau_cr<abs(tau8):
+        if tau_cr<tau1 or tau_cr<tau2 or tau_cr<tau3 or tau_cr<tau4 or tau_cr<abs(tau5) or tau_cr<abs(tau6) or tau_cr<abs(tau7) or tau_cr<abs(tau8):
             ribbs = np.append(ribbs,y)
-            print("rib")
+            #print("rib")
         
         rivet = "countersunk"
         Dlastrivet = y - ylastrivet
-        sig_cr =  rivetbuckling(rivet,E,t_s,Dlastrivet)
-        if sig_cr<sigma1 and sig_cr<sigma2 and sig_cr<sigma3 and sig_cr<sigma4 and sig_cr<abs(sigma5) and sig_cr<abs(sigma6) and sig_cr<abs(sigma7) and sig_cr<abs(sigma8):
+        sig_cr =  rivetbuckling(rivet,E,t_s,Dlastrivet)/10**6
+        if sig_cr<sigma1 or sig_cr<sigma2 or sig_cr<sigma3 or sig_cr<sigma4 or sig_cr<abs(sigma5) or sig_cr<abs(sigma6) or sig_cr<abs(sigma7) or sig_cr<abs(sigma8):
             rivets = rivets + number_of_stiff
-            print("rivet")
-        print(tau_cr,sig_cr)
-        # weight calculation
+            #print("rivet")
+        #print(tau_cr,sig_cr)
+        #weight calculation
         
         stiffweight = stiff_weight(t_s,h_s,density,number_of_stiff,stepsize) 
         webs_area = l1*t1+l2*t2+l3*t3+l4*t4
@@ -249,3 +254,5 @@ for loadcase in loadcasearray:
             ##########
             
     print(weight)
+    print(rivets)
+    print(len(ribbs))
