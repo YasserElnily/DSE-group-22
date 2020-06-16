@@ -42,16 +42,16 @@ safety_factor = 1.5
 
 """Loads and weights"""
 
-aircraft_mass = 700 
-wingloading = 0 #lift distribution
-thrust =  0 #
-vtol_thrust = 5900 #should be separated from thrust to run everything at once
+aircraft_mass = 775 
+wingloading = 2420 #lift distribution
+thrust =  110.25 #
+vtol_thrust = 2535 #should be separated from thrust to run everything at once
 controlloads_hor = 0 #horizontal control loads
 controlloads_ver = 0 #vertical control loads
-dragloading = 0 #drag distribution
+dragloading = 35 #drag distribution
 
-mrotor = 0 #mass of rotor
-wing_weight = 0 #mass, if added to calculation stresses will be lowered
+mrotor = 50 #mass of rotor
+wing_weight = 40*9.81 # if added to calculation stresses will be lowered
 
 
 """Material"""
@@ -116,13 +116,13 @@ def loadcase1(stepsize,chordroot,taper,span):
         loadcase1[n,1] = reac1
         #shear forcesx
         reac2 = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
-        loadcase1[n,2] = reac2 - dragloading*y
+        loadcase1[n,2] = reac2
         #momentz
         reac3 = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[5]
-        loadcase1[n,3] = reac3 + reac2*y - (dragloading*y**2)/2
+        loadcase1[n,3] = reac3 + reac2*y
         #momentx
         reac4 =  reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[3]
-        loadcase1[n,4] = reac4 + reac1*y
+        loadcase1[n,4] = reac4 - reac1*y
         #Torsion
         loadcase1[n,5] = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[4]
     return loadcase1
@@ -145,11 +145,11 @@ def loadcase2(stepsize, chordroot, taper, span):
         reac2 = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
         loadcase2[n,2] = reac2-dragloading*y
         #momentz
-        reac3 = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[5]
-        loadcase2[n,3] = reac3+reac2*y-(dragloading*y**2)/2        
+        reac3 =  - reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[5]
+        loadcase2[n,3] = -reac3-reac2*y-(dragloading*y**2)/2        
         #momentx
-        reac4 =  reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[3]
-        loadcase2[n,4] = reac4+reac1*y-(wingloading*y-wingmassloading*y)*y/2
+        reac4 =  - reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[3]
+        loadcase2[n,4] = reac4+reac1*y + (wingloading*y-wingmassloading*y)*y/2
         #Torsion
         loadcase2[n,5] = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[4]
     return loadcase2
