@@ -205,7 +205,7 @@ for loadcase in loadcasearray:
             #5,6,7,8 min stresses on webs 1,2,3,4
             #loc gives position of max/min stress as A POSITION IN METERS w.r.t the web
             #print("y {:.3e}".format(y),"Vx {:.3e}".format(Vx),"Vy {:.3e}".format(Vy),"Mx {:.3e}".format(Mx),"Mz {:.3e}".format(Mz))
-            print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc))
+            print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc), sep="\n")
             #TopsKing
             CCstress = stiffendskincalculation(chord,t1,ntopstring,E,v,stringer(material("AL6061")))
             while CCstress < sigma5:
@@ -252,7 +252,8 @@ for loadcase in loadcasearray:
             #some space for rib pitch
             #some space for weight estimation
             ##########
-            
-    print(weight)
-    print(rivets)
-    print(len(ribbs))
+    
+    print("")     
+    print("Weight = ", weight)
+    print("Number of rivets needed: ", rivets)
+    print("Number of ribs needed: ", len(ribbs))
