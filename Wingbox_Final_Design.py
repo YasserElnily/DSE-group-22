@@ -167,7 +167,9 @@ for loadcase in loadcasearray:
     stressarray = np.empty([steps,10]) #do we need this?????????
     ylastspar = 0
     ylastrivet = 0
+    ylastrib = 0
     ribbs = np.array([])
+    rib = 0
     rivets = 0
     nbottomstring = 0
     ntopstring = 0
@@ -209,8 +211,8 @@ for loadcase in loadcasearray:
             #5,6,7,8 min stresses on webs 1,2,3,4
             #loc gives position of max/min stress as A POSITION IN METERS w.r.t the web
     
-            Mx = force[3] #Moment around y-axis, positive for beam bending towards trailing edge
-            Mz = force[4] #Moment around x-axis, negative for beam bending upwards
+            Mz = force[3] #Moment around y-axis, positive for beam bending towards trailing edge
+            Mx = force[4] #Moment around x-axis, negative for beam bending upwards
             sigma1,sigma1_loc,sigma2,sigma2_loc,sigma3,sigma3_loc,sigma4,sigma4_loc,sigma5,sigma5_loc,sigma6,sigma6_loc,sigma7,sigma7_loc,sigma8,sigma8_loc,=   normal_stress(t1,t2,t3,t4,l1,l2,l3,l4,alpha,beta,width,x_centroid_box,(hf-y_centroid_box),x_centroid_box,(hf-y_centroid_box),Ixx,Izz,Ixz,Mz,Mx)
             #1,2,3,4 max stresses on webs 1,2,3,4
             #5,6,7,8 min stresses on webs 1,2,3,4
@@ -237,12 +239,12 @@ for loadcase in loadcasearray:
         #print("number of topstringers",ntopstring,"number of bottomstringers",nbottomstring,"\n")
         
         number_of_stiff = 4 + ntopstring + nbottomstring
-        Dlastspar = hf
+        Dlaststiff = hf
         if len(ribbs) == 0:
             a = 1
         else:
             a = len(ribbs)
-        tau_cr = shearbucklingstress(Dlastspar,t4,E,v,a,halfspan)/(10**6)
+        tau_cr = shearbucklingstress(Dlaststiff,t4,E,v,a,halfspan)/(10**6)
         if tau_cr<tau2 or tau_cr<tau4 or tau_cr<abs(tau6) or tau_cr<abs(tau8):
             ribbs = np.append(ribbs,y)
             #print("rib")
@@ -258,18 +260,34 @@ for loadcase in loadcasearray:
             #print("rivet")
         #print(tau_cr,sig_cr)
         #weight calculation
+            
+            
+        #ribs
+        
+        areatotal=  h_s*t_s + w_s*t_s
+        Ixx_s = mom_of_inertia(c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s,ntopstring,nbottomstring)[5]
+        L = y - ylastrib
+        sig_eul = eulerbuckling(L,E,Ixx_s,ntopstring,areatotal)/10**6
+        if sig_eul < sigma5 or sig_eul < sigma7:
+            ylastrib = y
+            rib +=1
+            print(rib)
         
         stiffweight = stiff_weight(t_s,h_s,density,number_of_stiff,stepsize) 
         webs_area = l1*t1+l2*t2+l3*t3+l4*t4
         webs_vol = stepsize*webs_area
+        
+        
         webs_weight = webs_vol*density
         weight = stiffweight + webs_weight + weight
+        
+        
             ##########
             #some space for stringer pitch
             #some space for rib pitch
             #some space for weight estimation
             ##########
-        print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc),"number of stringers",number_of_stiff)
+        print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma7),"sigma2_loc {:.3e}".format(sigma7_loc),"number of stringers",number_of_stiff)
         print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)    
     print("")     
     print("Weight = ", weight)
