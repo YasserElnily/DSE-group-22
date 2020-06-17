@@ -29,10 +29,10 @@ airfoil = 'airfoil.dat'
 t1 = 0.001 #Wanted top web thickness in m
 t2 = 0.001 #Wanted rear spar thickness in m
 t3 = 0.001 #Wanted bottom web thickness in m
-t4 = 0.00125 #Wanted front spar thickness in m
+t4 = 0.001 #Wanted front spar thickness in m
 
 t_s = 0.002 #Stringer thickness
-h_s = 0.02 #Stringer dimension
+h_s = 0.025 #Stringer dimension
 
 """Load factors"""
 
@@ -43,15 +43,15 @@ safety_factor = 1.5
 """Loads and weights"""
 
 aircraft_mass = 775 #in kg
-wingloading = 2420 #lift distribution in N/m for the WHOLE wing
-thrust =  110.25 #in N for cruise PER ROTOR
-vtol_thrust = 2535 #in N for VTOL PER ROTOR
+wingloading = 649 #lift distribution in N/m for the WHOLE wing
+thrust =  93 #in N for cruise PER ROTOR
+vtol_thrust = 2243 #in N for VTOL PER ROTOR
 controlloads_hor = 0 #horizontal control loads
 controlloads_ver = 0 #vertical control loads
-dragloading = 35 #drag distribution in N/m for the WHOLE wing!
+dragloading = 23 #drag distribution in N/m for the WHOLE wing!
 
 mrotor = 50 #mass of rotor
-wing_weight = 40*9.81 #weight of the wing if added to calculation stresses will be lowered
+wing_weight = 26*9.81 #weight of the wing if added to calculation stresses will be lowered
 
 
 """Material"""
@@ -273,13 +273,15 @@ for loadcase in loadcasearray:
             rib +=1
             print(rib)
         
-        stiffweight = stiff_weight(t_s,h_s,density,number_of_stiff,stepsize) 
+        stiffweight = stiff_weight(t_s,h_s,density,number_of_stiff,stepsize)
+        
         webs_area = l1*t1+l2*t2+l3*t3+l4*t4
         webs_vol = stepsize*webs_area
         
         
         webs_weight = webs_vol*density
-        weight = stiffweight + webs_weight + weight
+        weight += stiffweight + webs_weight
+        print("weight", weight)
         
         
             ##########
@@ -294,4 +296,6 @@ for loadcase in loadcasearray:
     print("Number of rivets needed: ", rivets)
     print("Number of side stiffeners needed: ", len(ribbs))
     #print("Number of stringers: ", number_of_stiff)
+    print("Number of ribs", rib)
     print(y)
+
