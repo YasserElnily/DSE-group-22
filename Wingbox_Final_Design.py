@@ -270,10 +270,10 @@ for loadcase in loadcasearray:
             #some space for weight estimation
             ##########
         print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma2),"sigma2_loc {:.3e}".format(sigma2_loc),"number of stringers",number_of_stiff)
-        print("Top stringers :", ntopstring, "Bottom stringers :", nbottomstring)    
+        print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)    
     print("")     
     print("Weight = ", weight)
     print("Number of rivets needed: ", rivets)
     print("Number of side stiffeners needed: ", len(ribbs))
-    print("Number of stiffeners: ", number_of_stiff)
+    #print("Number of stringers: ", number_of_stiff)
     print(y)
