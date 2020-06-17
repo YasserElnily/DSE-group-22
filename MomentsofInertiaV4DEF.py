@@ -172,7 +172,7 @@ def mom_of_inertia (c,l1,l2,l3,l4,alpha,beta,t1,t2,t3,t4,t_s,h_s,nstringers_top,
     Ixy_total = np.sum(Ixy_skin + np.multiply(Areas_skin,deltaxy_skin)) + np.sum(Ixy_stringers+np.multiply(Areas_stringers,deltaxy_stringers))
     
     
-    return (x_centroid_box, y_centroid_box, Ixx_total, Iyy_total, Ixy_total)
+    return (x_centroid_box, y_centroid_box, Ixx_total, Iyy_total, Ixy_total, Ixx_s, Iyy_s, Ixy_s)
 
 
 
