@@ -137,3 +137,9 @@ def stiff_weight(t_s,h_s,density,number_of_stiff,stepsize):
     stiffeners_weight = stiffeners_vol*density
     
     return stiffeners_weight
+
+def eulerbuckling(L,E_s,Ixx_s,nstringers):
+    C = 0.25
+    P_cr = C * np.pi**2 * E * I /(L**2)
+    sig_cr = (nstring+1)*(P_cr/A_s)
+    return sig_cr
