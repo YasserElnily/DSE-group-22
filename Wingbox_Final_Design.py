@@ -42,16 +42,16 @@ safety_factor = 1.5
 
 """Loads and weights"""
 
-aircraft_mass = 775 
-wingloading = 2420 #lift distribution
-thrust =  110.25 #
-vtol_thrust = 2535 #should be separated from thrust to run everything at once
+aircraft_mass = 775 #in kg
+wingloading = 2420 #lift distribution in N/m for the WHOLE wing
+thrust =  110.25 #in N for cruise PER ROTOR
+vtol_thrust = 2535 #in N for VTOL PER ROTOR
 controlloads_hor = 0 #horizontal control loads
 controlloads_ver = 0 #vertical control loads
-dragloading = 35 #drag distribution
+dragloading = 35 #drag distribution in N/m for the WHOLE wing!
 
 mrotor = 50 #mass of rotor
-wing_weight = 40*9.81 # if added to calculation stresses will be lowered
+wing_weight = 40*9.81 #weight of the wing if added to calculation stresses will be lowered
 
 
 """Material"""
