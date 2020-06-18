@@ -376,10 +376,16 @@ ng6 = ng(-U_B, V_B)
 
 #Construct the straight connection lines
 for i in range(len(V_EAS)):
-    gline12[i] = ((ng2 - ng1) / (V_C - V_B)) * (V_EAS[i] - V_C) + ng2
-    gline23[i] = ((ng3 - ng2) / (V_D - V_C)) * (V_EAS[i] - V_C) + ng2
-    gline45[i] = ((ng5 - ng4) / (V_C - V_D)) * (V_EAS[i] - V_C) + ng5
-    gline56[i] = ((ng6 - ng5) / (V_B - V_C)) * (V_EAS[i] - V_C) + ng5
+    if V_B!=V_C:
+        gline12[i] = ((ng2 - ng1) / (V_C - V_B)) * (V_EAS[i] - V_C) + ng2
+        gline23[i] = ((ng3 - ng2) / (V_D - V_C)) * (V_EAS[i] - V_C) + ng2
+        gline45[i] = ((ng5 - ng4) / (V_C - V_D)) * (V_EAS[i] - V_C) + ng5
+        gline56[i] = ((ng6 - ng5) / (V_B - V_C)) * (V_EAS[i] - V_C) + ng5
+    else:
+        #gline12[i] = ((ng2 - ng1) / (V_C - V_B)) * (V_EAS[i] - V_C) + ng2
+        gline23[i] = ((ng3 - ng2) / (V_D - V_C)) * (V_EAS[i] - V_C) + ng2
+        gline45[i] = ((ng5 - ng4) / (V_C - V_D)) * (V_EAS[i] - V_C) + ng5
+        #gline56[i] = ((ng6 - ng5) / (V_B - V_C)) * (V_EAS[i] - V_C) + ng5
 
 fig2 = plt.figure()
 gusts = fig2.add_subplot(111)
@@ -406,6 +412,9 @@ gusts.vlines(V_C, min(0.,ng5), ng2, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_B, min(0.,ng6), ng1old, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_D, 0., ng4, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_S, 0., 1., color=g_envelope_color, linestyle="dashed")
+
+if V_B==V_C:
+    gusts.vlines(V_B, ng6, ng5, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
 gusts.axhline(1., color=g_envelope_color, linestyle="dashed")
 
