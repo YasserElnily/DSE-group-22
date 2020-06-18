@@ -11,7 +11,7 @@ m_to = 775#kg
 print("Altitude = " + str(h) + "m")
 C_L_max_clean = 1.3944#2.023
 S_ref = 10.50
-cruise_speed= 220 #km/h
+cruise_speed= 61 #m/s
 C_L_alpha_M0 = 4.633 #lift curve at mach zero (nothing moment related)
 MAC = 1.5
 #VERY IMPORTANT COMMENT: one should check line 130 (N_k) for the maximum load factor at TO and 'line3' should be changed to correct formula
@@ -52,7 +52,7 @@ print(V_S)
 print(loopcount)
 
 V_A = V_S * sqrt(n_max)
-V_C = cruise_speed/3.6#sqrt(ISA(11887.2)[2]/rho_0)*M_C*ISA(11887.2)[3]#118.5
+V_C = cruise_speed#sqrt(ISA(11887.2)[2]/rho_0)*M_C*ISA(11887.2)[3]#118.5
 V_D = V_C/0.8 #148.125
 
 V_S_1_new = sqrt(2 * m_to * g / (rho_0 * C_L_max_HLD * S_flapped))
