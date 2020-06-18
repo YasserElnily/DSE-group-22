@@ -130,7 +130,7 @@ for i in range(len(V_EAS)):
 ########## VTOL envelope calculations
 n_K = 1.5 ############ Assumption!!!! Do proper power calculation (n_K is determined by maximum available lift at take-off)
 line3 = zeros(V_EAS.shape)
-line3 = 0.5 / 15 * V_EAS + n_K ### fill line 3 with calculation about proprotor lift + wing lift
+line3 = (1.5*m_to*g+C_L_max_clean*0.5*rho_0*(V_EAS**2)*S_ref)/(m_to*g)#0.5 / 15 * V_EAS + n_K ### fill line 3 with calculation about proprotor lift + wing lift
 end_index_line3 = 0
 for i in range(len(line3)):
     if line3[i] <= n_max_VTOL:
