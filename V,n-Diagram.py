@@ -17,7 +17,7 @@ MAC = 1.5
 #VERY IMPORTANT COMMENT: one should check line 130 (N_k) for the maximum load factor at TO and 'line3' should be changed to correct formula
 
 #values that can be changed but probably will not anymore
-n_max = 2.1 + 24000/(m_to*2.205+24000)
+n_max = 2.5#2.1 + 24000/(m_to*2.205+10000)
 n_min = -n_max*0.4
 print('n max = ',n_max, ' n min = ', n_min)
 accuracy = 0.01
