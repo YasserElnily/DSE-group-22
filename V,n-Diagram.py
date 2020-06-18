@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from ISA_calculator import ISA
 
 #values we need to check and change!!!
-h = 0#11887.2
+h = 3048#11887.2
 m_to = 775#kg
 print("Altitude = " + str(h) + "m")
 C_L_max_clean = 1.3944#2.023
@@ -52,7 +52,7 @@ print(V_S)
 print(loopcount)
 
 V_A = V_S * sqrt(n_max)
-V_C = cruise_speed#sqrt(ISA(11887.2)[2]/rho_0)*M_C*ISA(11887.2)[3]#118.5
+V_C = cruise_speed*sqrt(rho/rho_0)#*M_C*ISA(11887.2)[3]#118.5
 V_D = V_C/0.8 #148.125
 
 V_S_1_new = sqrt(2 * m_to * g / (rho_0 * C_L_max_HLD * S_flapped))
