@@ -139,7 +139,10 @@ def stiff_weight(t_s,h_s,density,number_of_stiff,stepsize):
     return stiffeners_weight
 
 def eulerbuckling(L,E_s,Ixx_s,nstring,A_s):
-    C = 0.25
-    P_cr = C * np.pi**2 * E * Ixx_s /(L**2)
-    sig_cr = (nstring+1)*(P_cr/A_s)
+    if L == 0:
+        sig_cr = 0
+    else:
+        C = 0.25
+        P_cr = C * np.pi**2 * E * Ixx_s /(L**2)
+        sig_cr = (nstring+1)*(P_cr/A_s)
     return sig_cr

@@ -36,7 +36,7 @@ def reaction_forces (condition, halfspan, m, Ixx, Iyy, Izz, T_vtol, T_cruise,w_d
         #Accelerations  
         ax = 0    #[m/s2]
         ay = 0    #[m/s2]
-        az = 1    #[m/s2]
+        az = 0    #[m/s2]
         a_angx = 0    #[rad/s2]
         a_angy = 0    #[rad/s2]
         a_angz = 0    #[rad/s2] 
