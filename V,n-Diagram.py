@@ -12,7 +12,7 @@ print("Altitude = " + str(h) + "m")
 C_L_max_clean = 1.3944#2.023
 S_ref = 10.50
 cruise_speed= 61 #m/s
-C_L_alpha_M0 = 4.633 #lift curve at mach zero (nothing moment related)
+C_L_alpha_M0 = 4#.633 #lift curve at mach zero (nothing moment related)
 MAC = 1.5
 #VERY IMPORTANT COMMENT: one should check line 130 (N_k) for the maximum load factor at TO and 'line3' should be changed to correct formula
 
@@ -457,8 +457,12 @@ gusts.xaxis.set_label_coords(1.08, 0.32)
 gusts.set_ylabel(r"$n_g$")
 
 gusts.text(V_S, 0 + 0.05, r"$V_S$")
-gusts.text(V_B, 0 + 0.05, r"$V_B=V_C$")
-#gusts.text(V_C, 0 + 0.05, r"$V_C$")
+
+if V_B==V_C:
+    gusts.text(V_B, 0 + 0.05, r"$V_B=V_C$")
+else:
+    gusts.text(V_B, 0 + 0.05, r"$V_B$")
+    gusts.text(V_C, 0 + 0.05, r"$V_C$")
 gusts.text(V_D, 0 + 0.05, r"$V_D$")
 
 gusts.text(V_B + 0.8, ng1old + 0.05, "1")
@@ -474,4 +478,4 @@ gusts.text(V_B + 0.8, ng6 - 0.14, "6")
 
 plt.show()
 
-print('V_S', V_S, 'V_A', V_A , 'V_C', V_C, 'V_D', V_D, 'VEOT/VH', V_H)
+print('V_S', V_S, 'V_A', V_A , 'V_C', V_C,'V_B', V_B, 'V_D', V_D, 'VEOT/VH', V_H)
