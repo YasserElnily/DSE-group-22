@@ -443,3 +443,5 @@ gusts.text(V_B + 0.8, ng6 - 0.14, "6")
 
 
 plt.show()
+
+print('V_S', V_S, 'V_A', V_A , 'V_C', V_C, 'V_D', V_D, 'VEOT/VH', V_H)
