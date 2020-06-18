@@ -388,6 +388,17 @@ for i in range(len(V_EAS)):
         gline45[i] = ((ng5 - ng4) / (V_C - V_D)) * (V_EAS[i] - V_C) + ng5
         #gline56[i] = ((ng6 - ng5) / (V_B - V_C)) * (V_EAS[i] - V_C) + ng5
 
+i_gline5_end = 0
+i_gline6_end = 0
+i_gline45_start = 0
+for i in range(len(V_EAS)):
+    if gline5[i]>n_min:
+        i_gline5_end = i
+    if gline6[i]>n_min:
+        i_gline6_end = i
+    if gline45[i]<n_min:
+        i_gline45_start = i
+
 fig2 = plt.figure()
 gusts = fig2.add_subplot(111)
 
@@ -398,26 +409,33 @@ gusts.plot(V_EAS[:i_V_D+1], gline3[:i_V_D+1], color=g_envelope_color, linestyle=
 gusts.plot(V_EAS[:i_V_D+1], gline4[:i_V_D+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[:i_V_C+1], gline5[:i_V_C+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[:i_V_stst6+1], gline6[:i_V_stst6+1], color=g_envelope_color, linestyle="dashed")
-gusts.plot(V_EAS[i_V_stst6:i_V_B+1], gline6[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+#gusts.plot(V_EAS[i_V_stst6:i_V_B+1], gline6[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+gusts.plot(V_EAS[i_V_stst6:i_gline6_end+1], gline6[i_V_stst6:i_gline6_end+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+gusts.plot(V_EAS[i_gline6_end:i_V_B+1], gline6[i_gline6_end:i_V_B+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[:i_V_B+1], static_stall[:i_V_B+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[i_V_stst6:i_V_B+1], static_stall[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
 
 gusts.plot(V_EAS[i_V_B:i_V_C+1], gline12[i_V_B:i_V_C+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.plot(V_EAS[i_V_C:i_V_D+1], gline23[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
-gusts.plot(V_EAS[i_V_C:i_V_D+1], gline45[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+#gusts.plot(V_EAS[i_V_C:i_V_D+1], gline45[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+gusts.plot(V_EAS[i_gline45_start:i_V_D+1], gline45[i_gline45_start:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.plot(V_EAS[i_V_B:i_V_C+1], gline56[i_V_B:i_V_C+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.vlines(V_D, ng4, ng3, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
-gusts.vlines(V_C, min(0.,ng5), ng2, color=g_envelope_color, linestyle="dashed")
+gusts.vlines(V_C, min(0.,n_min), ng2, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_B, min(0.,ng6), ng1old, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_D, 0., ng4, color=g_envelope_color, linestyle="dashed")
 gusts.vlines(V_S, 0., 1., color=g_envelope_color, linestyle="dashed")
 
-if V_B==V_C:
-    gusts.vlines(V_B, ng6, ng5, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+#if V_B==V_C:
+    #gusts.vlines(V_B, ng6, ng5, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+    
+gusts.hlines(n_min, V_EAS[i_gline6_end], V_EAS[i_gline45_start], color=m_envelope_color, linewidth=envelope_linewidth)
+gusts.hlines(n_min, V_EAS[i_gline6_end], V_EAS[i_gline45_start], color=m_envelope_color, linewidth=envelope_linewidth)
 
 gusts.axhline(1., color=g_envelope_color, linestyle="dashed")
+gusts.axhline(-1., color=g_envelope_color, linestyle="dashed")
 
 
 #Fixing the x-axis to the origin
@@ -439,13 +457,13 @@ gusts.xaxis.set_label_coords(1.08, 0.32)
 gusts.set_ylabel(r"$n_g$")
 
 gusts.text(V_S, 0 + 0.05, r"$V_S$")
-gusts.text(V_B, 0 + 0.05, r"$V_B$")
-gusts.text(V_C, 0 + 0.05, r"$V_C$")
+gusts.text(V_B, 0 + 0.05, r"$V_B=V_C$")
+#gusts.text(V_C, 0 + 0.05, r"$V_C$")
 gusts.text(V_D, 0 + 0.05, r"$V_D$")
 
-gusts.text(V_B, ng1 + 0.05, "1")
-gusts.text(V_C, ng2 + 0.05, "2")
-gusts.text(V_D, ng3 + 0.05, "3")
+gusts.text(V_B + 0.8, ng1old + 0.05, "1")
+gusts.text(V_C + 0.8, ng2 + 0.05, "2")
+gusts.text(V_D + 0.8, ng3 + 0.05, "3")
 gusts.text(V_D + 0.8, ng4 - 0.14, "4")
 gusts.text(V_C + 0.8, ng5 - 0.14, "5")
 gusts.text(V_B + 0.8, ng6 - 0.14, "6")
