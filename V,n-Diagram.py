@@ -325,6 +325,8 @@ i_V_D = 0
 i_V_stst6 = 0
 
 V_B = V_S*sqrt(ng(U_C, V_C))
+if V_B>V_C:
+    V_B=V_C
 
 
 #Construct the curves/lines for each gust speed U & the static stall curve
