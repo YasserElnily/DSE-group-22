@@ -12,7 +12,7 @@ print("Altitude = " + str(h) + "m")
 C_L_max_clean = 1.3944#2.023
 S_ref = 10.50
 cruise_speed= 61 #m/s
-C_L_alpha_M0 = 4#.633 #lift curve at mach zero (nothing moment related)
+C_L_alpha_M0 = 4.633 #lift curve at mach zero (nothing moment related)
 MAC = 1.5
 #VERY IMPORTANT COMMENT: one should check line 130 (N_k) for the maximum load factor at TO and 'line3' should be changed to correct formula
 
@@ -420,7 +420,8 @@ gusts.plot(V_EAS[i_V_B:i_V_C+1], gline12[i_V_B:i_V_C+1], color=g_envelope_color,
 gusts.plot(V_EAS[i_V_C:i_V_D+1], gline23[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 #gusts.plot(V_EAS[i_V_C:i_V_D+1], gline45[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.plot(V_EAS[i_gline45_start:i_V_D+1], gline45[i_gline45_start:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
-gusts.plot(V_EAS[i_V_B:i_V_C+1], gline56[i_V_B:i_V_C+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+
+#gusts.plot(V_EAS[i_V_B:i_V_C+1], gline56[i_V_B:i_V_C+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.vlines(V_D, ng4, ng3, color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
 gusts.vlines(V_C, min(0.,n_min), ng2, color=g_envelope_color, linestyle="dashed")
