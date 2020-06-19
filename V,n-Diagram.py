@@ -6,11 +6,11 @@ from matplotlib import pyplot as plt
 from ISA_calculator import ISA
 
 #values we need to check and change!!!
-h = 3048#11887.2
+h = 3048#3048#11887.2
 m_to = 775#kg
 print("Altitude = " + str(h) + "m")
-C_L_max_clean = 1.3944#2.023
-S_ref = 10.50
+C_L_max_clean = 1.41#1.3944#2.023
+S_ref = 9
 cruise_speed= 61 #m/s
 C_L_alpha_M0 = 4.633 #lift curve at mach zero (nothing moment related)
 MAC = 1.5
