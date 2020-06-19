@@ -11,8 +11,25 @@ import numpy as np
 ROC_VTOL= 5*60 #m/min
 ROC_trans = 1*60 #m/min
 ROC_horiz = 2.5*60 #m/min
-V_cruise = 61*60 #m/s
-ROD_horiz = 
+V_cruise = 61*60 #m/min
+ROD_horiz =0.6*60 #m/min
+ROD_trans = 0.5*60 #m/min
+ROD_VTOL = 1*60 #m/s
+
+hmax = 3048# m
+hmin = 304.8
+
+Endurance =3*60 #min
+Divergeendurance = 45 #min
+Range = 300*1000 #m
+
+h1 = 5 #m set by Kushagra book
+t1 = h1/ROC_VTOL
+
+h2 = 11 #m #V2
+t2 = t1+ (h2-h1)/ROC_trans
+
+t3_min = t2+ (hmin-h2)/ROC_horiz
 
 # #Input parameters
 # ROC = 1000 #[ft/min]
