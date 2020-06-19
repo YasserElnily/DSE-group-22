@@ -7,7 +7,7 @@ from ISA_calculator import ISA
 
 #values we need to check and change!!!
 h = 3048#3048#11887.2
-m_to = 775#kg
+m_to = 708#kg
 print("Altitude = " + str(h) + "m")
 C_L_max_clean = 1.41#1.3944#2.023
 S_ref = 9
@@ -413,11 +413,16 @@ gusts.plot(V_EAS[:i_V_stst6+1], gline6[:i_V_stst6+1], color=g_envelope_color, li
 gusts.plot(V_EAS[i_V_stst6:i_gline6_end+1], gline6[i_V_stst6:i_gline6_end+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.plot(V_EAS[i_gline6_end:i_V_B+1], gline6[i_gline6_end:i_V_B+1], color=g_envelope_color, linestyle="dashed")
 gusts.plot(V_EAS[:i_V_B+1], static_stall[:i_V_B+1], color=g_envelope_color, linestyle="dashed")
-gusts.plot(V_EAS[i_V_stst6:i_V_B+1], static_stall[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+gusts.plot(V_EAS[i_V_stst6:i_V_B+1], static_stall[i_V_stst6:i_V_B+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)########################################
+#gusts.plot(V_EAS[i_V_stst6:5352], static_stall[i_V_stst6:5352], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)###########################################
 
 
 gusts.plot(V_EAS[i_V_B:i_V_C+1], gline12[i_V_B:i_V_C+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
-gusts.plot(V_EAS[i_V_C:i_V_D+1], gline23[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
+gusts.plot(V_EAS[i_V_C:i_V_D+1], gline23[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)####################################################
+
+#gusts.plot(V_EAS[i_V_C:5352], gline23[i_V_C:5352], color=g_envelope_color, linestyle="dashed")############################
+#gusts.plot(V_EAS[5352:i_V_D+1], gline23[5352:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)################
+
 #gusts.plot(V_EAS[i_V_C:i_V_D+1], gline45[i_V_C:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 gusts.plot(V_EAS[i_gline45_start:i_V_D+1], gline45[i_gline45_start:i_V_D+1], color=g_envelope_color, linestyle="solid", linewidth=envelope_linewidth)
 
