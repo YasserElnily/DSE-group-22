@@ -43,7 +43,7 @@ def plotting(x,y,name):
     plt.show()
        
     
-def stiffendskincalculation(chord,t,nstring,E,v,stringer):
+def stiffendskincalculation1(chord,t,nstring,E,v,stringer):
     h_s, t_s, alpha_Al, n_al, sig_y6061, sig_ulti6061, E_6061, G_6061 = stringer
     #stiffener components: Assuming L stiffener, both parts SSFS 
     C_s = 0.425
@@ -57,7 +57,6 @@ def stiffendskincalculation(chord,t,nstring,E,v,stringer):
     area_stiffener = area_base+area_vertical
     #print(sigma_cc_stiffener)
     bacc2 = "null"
-
     if nstring < 1:
         C = 6.98
         b = chord
@@ -91,6 +90,55 @@ def stiffendskincalculation(chord,t,nstring,E,v,stringer):
         sigma_cc_panel = min([sigma_cc_panel1,sigma_cc_panel2])
         
     return sigma_cc_panel/(10**6), b, bacc2
+
+def stiffendskincalculation2(chord,t,nstring,E,v,stringer):
+    h_s, t_s, alpha_Al, n_al, sig_y6061, sig_ulti6061, E_6061, G_6061 = stringer
+    #stiffener components: Assuming L stiffener, both parts SSFS 
+    C_s = 0.425
+    sigma_cc_base = sig_y * alpha_Al * (C_s/sig_y * np.pi**2 * E/(12*(1-v**2)) * (t_s/h_s)**2)**(1-n_Al)
+    area_base = (h_s)*t_s
+    sigma_cc_vertical = sig_y * alpha_Al * (C_s/sig_y * np.pi**2 * E/(12*(1-v**2)) * (t_s/h_s)**2)**(1-n_Al)
+    area_vertical = (h_s*t_s)
+    
+    #sigma_cc_stiffener = (sigma_cc_base*area_base + sigma_cc_vertical*area_vertical)/(area_base+area_vertical)
+    sigma_cc_stiffener = sig_y
+    area_stiffener = area_base+area_vertical
+    #print(sigma_cc_stiffener)
+    bacc2 = "null"
+    if nstring < 1:
+        C = 9.2
+        b = chord
+        sigma_cc_panel = C * (np.pi**2 * E)*(t/b)**2 / (12*(1-v**2))   
+        
+    elif nstring < 2:
+        C =  8.2
+        Cst = 6.98
+        
+        we = (t/2)*math.sqrt(Cst*math.pi**2*E/(12*(1-v**2)*sigma_cc_stiffener))
+        b = chord/(nstring+1)- we
+        sigma_cr_skin = C * (np.pi**2 * E)*(t/b)**2 / (12*(1-v**2))
+        sigma_cc_panel = ((sigma_cc_stiffener*area_stiffener)+(sigma_cc_stiffener*t*we)+(sigma_cr_skin*t*b))/(area_stiffener+t*we+t*b)
+        
+
+    else:
+        C1 = 8.2
+        C2 = 8.2
+        Cst = 6.98
+        
+        we = (t/2)*math.sqrt(Cst*math.pi**2*E/(12*(1-v**2)*sigma_cc_stiffener))
+        b = chord / (nstring+1)
+        bacc1 = b - we
+        bacc2 = b - 2*we
+        #the sides of the wingbox
+        sigma_cr_skin = C1 * (np.pi**2 * E)*(t/bacc1)**2 / (12*(1-v**2)) 
+        sigma_cc_panel1 = (sigma_cc_stiffener*area_stiffener + sigma_cc_stiffener*2*we*t + sigma_cr_skin*b*t) / ( b*t + area_stiffener)
+        #between the stringers
+        sigma_cr_skin = C2 * (np.pi**2 * E)*(t/b)**2 / (12*(1-v**2)) 
+        sigma_cc_panel2 = (sigma_cc_stiffener*area_stiffener + sigma_cc_stiffener*2*we*t + sigma_cr_skin*b*t) / ( b*t + area_stiffener)
+        sigma_cc_panel = min([sigma_cc_panel1,sigma_cc_panel2])
+        
+    return sigma_cc_panel/(10**6), b, bacc2
+
 
 def rivetbuckling(rivet,E,t,s):
     #rivet spacing
@@ -144,5 +192,5 @@ def eulerbuckling(L,E_s,Ixx_s,nstring,A_s):
     else:
         C = 0.25
         P_cr = C * np.pi**2 * E * Ixx_s /(L**2)
-        sig_cr = (nstring+1)*(P_cr/A_s)
+        sig_cr = (P_cr/A_s)
     return sig_cr
