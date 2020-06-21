@@ -142,9 +142,9 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     q_lblu_y = np.empty(len(mesh1))
     for i in range(0,len(mesh1)):
         if i<= np.argmin(int_yds_lblu):
-            q_lblu_y[i] = t4*((Vy*Iyy-Vx*Ixy)/(Ixx*Iyy-Ixy**2))*int_yds_lblu[i]
-        else:
             q_lblu_y[i] = -t4*((Vy*Iyy-Vx*Ixy)/(Ixx*Iyy-Ixy**2))*int_yds_lblu[i]
+        else:
+            q_lblu_y[i] = t4*((Vy*Iyy-Vx*Ixy)/(Ixx*Iyy-Ixy**2))*int_yds_lblu[i]
 
     #print(q_lblu_y)
 
