@@ -280,9 +280,9 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
     q_luru_x = np.empty(len(mesh1))
     for i in range(0,len(mesh1)):
         if i<= np.argmax(int_xds_luru):
-            q_luru_x[i] = -t1*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_luru[i]
-        else:
             q_luru_x[i] = t1*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_luru[i]
+        else:
+            q_luru_x[i] = -t1*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_luru[i]
 
     #print(q_luru_x)
 
@@ -291,13 +291,13 @@ def shear_stress(t1,t2,t3,t4,length_upper_skin,length_right_side,length_lower_sk
 
     q_rblb_x = np.empty(len(mesh1))
     for i in range(0,len(mesh1)):
-        if i<= np.argmax(int_xds_rblb):
+        if i<= np.argmin(int_xds_rblb):
             q_rblb_x[i] = t3*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_rblb[i]
         else:
             q_rblb_x[i] = -t3*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_rblb[i]
     #print(q_rblb_x)
 
-    q_lblu_x = -t4*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_lblu
+    q_lblu_x = t4*((Vx*Ixx-Vy*Ixy)/(Ixx*Iyy-Ixy**2))*int_xds_lblu
     #print(q_lblu_x)
 
     """COMMENT"""
