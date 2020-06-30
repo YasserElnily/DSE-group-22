@@ -17,8 +17,8 @@ from function_normal_stress import *
 
 """Wing geometry"""
 
-width_fuselage = 0.7
-span = 7
+width_fuselage = 0.4
+span = 6
 taper = 1
 
 """Wing cross-section geometry"""
@@ -26,31 +26,31 @@ taper = 1
 chordroot = 1.5   # in m
 airfoil = 'airfoil.dat'
 
-t1 = 0.001 #Wanted top web thickness in m
-t2 = 0.001 #Wanted rear spar thickness in m
-t3 = 0.001 #Wanted bottom web thickness in m
-t4 = 0.001 #Wanted front spar thickness in m
+t1 = 0.0008 #Wanted top web thickness in m
+t2 = 0.0008 #Wanted rear spar thickness in m
+t3 = 0.0008 #Wanted bottom web thickness in m
+t4 = 0.0008 #Wanted front spar thickness in m
 
-t_s = 0.002 #Stringer thickness
-h_s = 0.025 #Stringer dimension
+t_s = 0.001 #Stringer thickness
+h_s = 0.015 #Stringer dimension
 
 """Load factors"""
 
-n_vtol = 2
-n_horiz = 3.2
-safety_factor = 1.5
+n_vtol = 2 #-0.5
+n_horiz = 2.92 #-1.0
+safety_factor = 1.5 #1.5
 
 """Loads and weights"""
 
 aircraft_mass = 775 #in kg
-wingloading = 649 #lift distribution in N/m for the WHOLE wing
-thrust =  93 #in N for cruise PER ROTOR
-vtol_thrust = 2243 #in N for VTOL PER ROTOR
+wingloading = 705 #lift distribution in N/m for the WHOLE wing
+thrust =  83 #in N for cruise PER ROTOR
+vtol_thrust = 2212 #in N for VTOL PER ROTOR
 controlloads_hor = 0 #horizontal control loads
 controlloads_ver = 0 #vertical control loads
-dragloading = 23 #drag distribution in N/m for the WHOLE wing!
+dragloading = 31 #drag distribution in N/m for the WHOLE wing!
 
-mrotor = 50 #mass of rotor
+mrotor = 24 #mass of rotor
 wing_weight = 26*9.81 #weight of the wing if added to calculation stresses will be lowered
 
 
@@ -98,7 +98,7 @@ density = 2780
 
 
 #creation of the forces array
-stepsize = 0.15 #meter
+stepsize = 0.01 #meter
 steps = int(halfspan/stepsize+1)
 
 #Take-off loadcase 
@@ -114,6 +114,7 @@ def loadcase1(stepsize,chordroot,taper,span):
         #shear forcesz
         reac1 = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[2]
         loadcase1[n,1] = reac1
+        #print("VTO", reac1)
         #shear forcesx
         reac2 = reaction_forces("VTO", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
         loadcase1[n,2] = reac2
@@ -141,6 +142,7 @@ def loadcase2(stepsize, chordroot, taper, span):
         #shear forcesz
         reac1 = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[2]
         loadcase2[n,1] = reac1 + (wingloading*y-wingmassloading*y)
+        #print("cruise", reac1)
         #shear forcesx
         reac2 = reaction_forces("cruise", halfspan, aircraft_mass, 0, 0, 0, vtolthrust, thrust ,dragloading ,rotorweight ,wingmassloading ,wingloading)[0]
         loadcase2[n,2] = reac2-dragloading*y
@@ -158,7 +160,6 @@ def loadcase2(stepsize, chordroot, taper, span):
 
 #Take-off loadcase
 loadcasearray = [loadcase1(stepsize,chordroot,taper,span),loadcase2(stepsize,chordroot,taper,span)]
-
 
 
 for loadcase in loadcasearray: 
@@ -281,15 +282,23 @@ for loadcase in loadcasearray:
         
         webs_weight = webs_vol*density
         weight += stiffweight + webs_weight
-        print("weight", weight)
+        #print("weight", weight)
         
-        
+        if y == 0:
+            print("y",y,"tau {:.3e}".format(max(tau1,tau2,tau3,tau4,abs(tau5),abs(tau6),abs(tau7),abs(tau8))),"sigma {:.3e}".format(max(sigma1,sigma2,sigma3,sigma4)),"sigma {:.3e}".format(min(sigma5,sigma6,sigma7,sigma8)))
+            print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)
+        if y == halfspan*0.5:
+            print("tau {:.3e}".format(max(tau1,tau2,tau3,tau4,abs(tau5),abs(tau6),abs(tau7),abs(tau8))),"sigma {:.3e}".format(max(sigma1,sigma2,sigma3,sigma4)),"sigma {:.3e}".format(min(sigma5,sigma6,sigma7,sigma8)))
+            print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)
+        if y == halfspan:
+            print("tau {:.3e}".format(max(tau1,tau2,tau3,tau4,abs(tau5),abs(tau6),abs(tau7),abs(tau8))),"sigma {:.3e}".format(max(sigma1,sigma2,sigma3,sigma4)),"sigma {:.3e}".format(min(sigma5,sigma6,sigma7,sigma8)))
+            print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)
             ##########
             #some space for stringer pitch
             #some space for rib pitch
             #some space for weight estimation
             ##########
-        print("tau1 {:.3e}".format(tau1),"tau1_loc {:.3e}".format(tau1_loc),"tau2 {:.3e}".format(tau2),"tau2_Loc {:.3e}".format(tau2_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma2 {:.3e}".format(sigma7),"sigma2_loc {:.3e}".format(sigma7_loc),"number of stringers",number_of_stiff)
+        #print("tau2 {:.3e}".format(tau2),"tau2_loc {:.3e}".format(tau2_loc),"tau4 {:.3e}".format(tau4),"tau4_Loc {:.3e}".format(tau4_loc),"sigma1 {:.3e}".format(sigma1),"sigma1_loc {:.3e}".format(sigma1_loc),"sigma3 {:.3e}".format(sigma3),"sigma3_loc {:.3e}".format(sigma3_loc),"number of stringers",number_of_stiff)
         print("Top stringers incl. corner: ", ntopstring+2, "Bottom stringers incl. corner: ", nbottomstring+2)    
     print("")     
     print("Weight = ", weight)
